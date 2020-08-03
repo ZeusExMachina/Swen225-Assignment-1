@@ -2,27 +2,60 @@ import java.util.*;
 import java.awt.Point;
 
 /**
- * Takes care of game setup and turn order for the Cluedo game. WIP
+ * Sets up the game and holds the connection between players 
+ * and the board. WIP
  * 
  * @author Elijah Guarina
  */
 
 public class Game {
+	/** 
+	 * A set to store all the cards used for the murder condition.
+	 * (suggestion: maybe make a new class for 3-card tuples for easy comparing)
+	 */
 	private final Set<Card> murderConditions = new HashSet<Card>();
+	/**
+	 * A list of all the cards in the game. Only used during setup.
+	 */
 	private final List<Card> allCards = new ArrayList<Card>();
+	/**
+	 * A list of the names of all characters from Cluedo. Order goes clockwise starting from Miss Scarlet.
+	 */
 	private final List<String> characters = Arrays.asList("Miss Scarlet", "Colonel Mustard", "Mrs. White", "Mr. Green", "Mrs. Peacock", "Professor Plum");
+	/**
+	 * A map of all players, and the player number they are associated with. Is implemented as a TreeMap to always maintain ordering of the key.
+	 */
 	private Map<Integer,Player> players = new TreeMap<Integer,Player>();
+	/**
+	 * The board associated with this game.
+	 */
 	private Board board;
+	/**
+	 * For generating random numbers, e.g. when rolling dice.
+	 */
 	private Random rand;
+	/**
+	 * A flag for if the game is over or not.
+	 */
 	private boolean gameOver;
 	
+	/**
+	 * Game constructor.
+	 * 
+	 * @param playerCount is the number of players
+	 */
 	public Game(int playerCount) {
 		rand = new Random();
 		setup(playerCount);
 	}
 	
-	// ------------ WHILE GAME RUNS --------------
+	// ----------------- WHILE GAME RUNS -------------------
 	
+	/**
+	 * Play through the game until a player correctly guesses 
+	 * the murder condition, in which case they win and the 
+	 * game is over.
+	 */
 	public void play() {
 		while (!gameOver) {
 			for (Map.Entry<Integer,Player> player : players.entrySet()) {
@@ -32,6 +65,12 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Roll two dice and get their sum. Two numbers are generated 
+	 * to try to mimic real dice.
+	 * 
+	 * @return the total of the two dice
+	 */
 	private Integer rollDice() {
 		System.out.println("Rolling...");
 		int first = rand.nextInt(6) + 1, second = rand.nextInt(6) + 1;
@@ -39,24 +78,38 @@ public class Game {
 		return first + second;
 	}
 	
-	public void movePiece(Point newPos) {
+	/**
+	 * Move a piece on the board to a new postion
+	 * 
+	 * @param pieceName is the name of the piece to move
+	 * @param newPos is the new position of the piece
+	 */
+	public void movePiece(String pieceName, Point newPos) {
 		// TODO: Tell the board to move the piece
 	}
 	
-	// ------------ PRE-GAME SETUP ---------------
+	// ----------------- PRE-GAME SETUP --------------------
 	
+	/**
+	 * Set up a new Cluedo game.
+	 * 
+	 * @param playerCount is the number of players 
+	 * 		  in the game
+	 */
 	private void setup(int playerCount) {
 		board = new Board();
 		gameOver = false;
 		// Create the cards and decide on the murder/win conditions
 		createAllCards();
-		Collections.shuffle(allCards);
 		setUpMurder();
 		// Now create players and deal the rest of the cards to them
 		createPlayers(playerCount);
 		dealCards();
 	}
 	
+	/**
+	 * Manually create all the cards of the Cluedo Game.
+	 */
 	private void createAllCards() {
 		allCards.clear();
 		allCards.add(new Card("Miss Scarlet", Card.CardType.CHARACTER));
@@ -82,8 +135,13 @@ public class Game {
 		allCards.add(new Card("Study", Card.CardType.ROOM));
 	}
 	
+	/**
+	 * Create the murder conditions (winning combination) by 
+	 * randomly selecting one Character, Weapon, and Room card.
+	 */
 	private void setUpMurder() {
 		murderConditions.clear();
+		Collections.shuffle(allCards);
 		for (int i = 0; i < 3; i++) {
 			if (i == 0) { getMurderCard(Card.CardType.CHARACTER); }
 			if (i == 1) { getMurderCard(Card.CardType.WEAPON); }
@@ -91,7 +149,12 @@ public class Game {
 		}
 		//for (Card card : murderConditions) { System.out.println("murder Card: " + card.toString()); }
 	}
-		
+	
+	/**
+	 * Select the first card from allCards of a certain type.
+	 * 
+	 * @param type is the type of card to look for
+	 */
 	private void getMurderCard(Card.CardType type)  {
 		// Get a random card of a particular type (given by the "type" parameter)
 		Card murderCard = null;
@@ -105,7 +168,24 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Create some new players and  assign them a character 
+	 * randomly.
+	 * 
+	 * @param playerCount is the number of players to create
+	 */
 	private void createPlayers(int playerCount) {
+		selectPlayerCharacters(playerCount);
+		assignCharacters();
+		//for (Map.Entry<Integer,Player> player : players.entrySet()) { System.out.println(player.toString()); }
+	}
+	
+	/**
+	 * Randomly select all characters that will be used by the players
+	 * 
+	 * @param playerCount is the number of characters to select
+	 */
+	private void selectPlayerCharacters(int playerCount) {
 		players.clear();
 		List<String> charactersNames = new ArrayList<String>(characters);
 		Collections.shuffle(charactersNames);
@@ -114,7 +194,12 @@ public class Game {
 			charName = charactersNames.get(i);
 			players.put(characters.indexOf(charName), new Player(charName));
 		}
-		// Now assign each character to a player number (e.g. Player 1)
+	}
+	
+	/**
+	 * Assign each character to a player number (e.g. Player 1)
+	 */
+	private void assignCharacters() {
 		Map<Integer,Player> playersReplacement = new TreeMap<Integer,Player>();
 		int playerNum = 1;
 		for (Map.Entry<Integer,Player> player : players.entrySet()) { 
@@ -122,9 +207,12 @@ public class Game {
 			playerNum++;
 		}
 		players = playersReplacement;
-		//for (Map.Entry<Integer,Player> player : players.entrySet()) { System.out.println(player.toString()); }
 	}
 	
+	/**
+	 * Deal the all cards (except murder cards) to evenly between 
+	 * each player. Some players may end up with more than others.
+	 */
 	private void dealCards() {
 		while (allCards.size() > 0) {
 			for (Map.Entry<Integer,Player> player : players.entrySet()) {
@@ -136,6 +224,12 @@ public class Game {
 		//for (Map.Entry<Integer,Player> player : players.entrySet()) { System.out.println(player.getValue().toString()); }
 	}
 	
+	/**
+	 * Greet the players to the game and ask how many people will 
+	 * play.
+	 * 
+	 * @return the number of players
+	 */
 	private static Integer getPlayerCount() {
 		// Give a greeting and ask for the number of players
 		Scanner inputScanner = new Scanner(System.in);
