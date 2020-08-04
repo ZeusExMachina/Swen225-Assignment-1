@@ -1,0 +1,14 @@
+public class Card {
+	String name;
+	
+	enum names {
+		Weapon,
+		Character,
+		Room
+	}
+	
+	public Card(String name) {
+		this.name = name;
+	}
+
+}
