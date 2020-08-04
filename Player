@@ -1,0 +1,33 @@
+import java.util.concurrent.ThreadLocalRandom;
+
+public class Player {
+	
+	private String name;
+	private Card deck[];
+
+	public Player(String name) {
+		this.name = name;
+	}
+	
+	public int roll() {
+		int randomNum = ThreadLocalRandom.current().nextInt(1, 6 + 1);
+		return randomNum;
+	}
+	public boolean suggest(Card c1, Card c2, Card c3) {
+		if(deck.contains(card?)) {
+			return true;
+		}
+		else {return false;}
+		
+	}
+	
+	public boolean refute(Card c) {
+		if(deck.contains(card?)) {
+			return true;
+		}
+		else {return false;}
+	}
+	public String accuse(Card weapon, Card player, Card room) {
+		
+	}
+}
