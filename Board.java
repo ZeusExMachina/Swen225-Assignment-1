@@ -12,6 +12,7 @@ public class Board {
         setupRooms();
         loadBoard();
         System.out.println("Finished loading the board :)");
+        this.draw();
     }
 
     private void setupRooms(){
@@ -62,16 +63,76 @@ public class Board {
     }
 
     public void draw(){
+        drawWalls();
+        drawLabels();
+        drawPieces();
+    }
+
+    private void drawWalls(){
         for(int row = 0; row < HEIGHT; row++){
+            System.out.println();
             for(int col = 0; col < WIDTH; col++){
                 Location location = currentBoard[row][col];
-                if(location.eastWall || location.northWall){
-                    System.out.println("+");
+                if(wallIsAdjacent(location) || location.northWall || location.westWall){
+                    System.out.print("+");
+                }
+                else{
+                    System.out.print(" ");
                 }
                 if(location.northWall){
                     System.out.print("###");
                 }
+                else{
+                    System.out.print("   ");
+                }
+                if(location.point.x == 23){
+                    if(wallIsAdjacent(location) || location.northWall || location.eastWall){
+                        System.out.print("+");
+                    }
+                    else{
+                        System.out.print(" ");
+                    }
+                }
+            }
+            System.out.println();
+            for(int col = 0; col < WIDTH; col++){
+                Location location = currentBoard[row][col];
+                if(location.westWall){
+                    System.out.print("#   ");
+                }
+                else{
+                    System.out.print("    ");
+                }
+                if(location.point.x == 23){
+                    if(location.eastWall){
+                        System.out.print("#");
+                    }
+                    else{
+                        System.out.print(" ");
+                    }
+                }
+                if(location.point.y == 24){
+
+                }
             }
         }
+    }
+
+    private void drawLabels(){
+
+    }
+
+    private void drawPieces(){
+
+    }
+
+    private boolean wallIsAdjacent(Location location){
+        int x = location.point.x;
+        int y = location.point.y;
+        if(x > 0 && y > 0){
+            Location upperRightLocation = currentBoard[y-1][x-1];
+            return upperRightLocation.southWall || upperRightLocation.eastWall;
+        }
+        return false;
     }
 }
