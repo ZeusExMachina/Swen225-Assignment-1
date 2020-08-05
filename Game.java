@@ -31,10 +31,6 @@ public class Game {
 	 */
 	private Board board;
 	/**
-	 * For generating random numbers, e.g. when rolling dice.
-	 */
-	private Random rand;
-	/**
 	 * A flag for if the game is over or not.
 	 */
 	private boolean gameOver;
@@ -45,7 +41,6 @@ public class Game {
 	 * @param playerCount is the number of players
 	 */
 	public Game(int playerCount) {
-		rand = new Random();
 		setup(playerCount);
 	}
 	
@@ -66,24 +61,22 @@ public class Game {
 	}
 	
 	/**
-	 * Roll two dice and get their sum. Two numbers are generated 
-	 * to try to mimic real dice.
+	 * Get a card with the matching name.
 	 * 
-	 * @return the total of the two dice
+	 * @param cardName is the name of the card to get
+	 * @return
 	 */
-	private Integer rollDice() {
-		System.out.println("Rolling...");
-		int first = rand.nextInt(6) + 1, second = rand.nextInt(6) + 1;
-		System.out.println("Rolled a " + first + " and a " + second);
-		return first + second;
-	}
+	public Card getCard(String cardName) { return allCards.get(cardName); }
 	
-	public Card getCard(String first) {
-		Card card = allCards.get(first);
-		if (card == null) { return null; }
-		else { return card; }
-	}
-	
+	/**
+	 * Run through all players to find a player that can refute 
+	 * a given suggestion.
+	 * 
+	 * @param suggester is the person who made the suggestion
+	 * @param suggestion is the suggestion made by suggester
+	 * @return the card used to refute the suggestion, if any.
+	 * 		   If there is no refutation card, return null.
+	 */
 	public Card refutationProcess(Player suggester, CardTuple suggestion) {
 		Card refuteCard = null;
 		for (Map.Entry<Integer,Player> play : players.entrySet()) {
