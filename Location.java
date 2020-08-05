@@ -1,12 +1,12 @@
+import java.awt.*;
+
 public class Location {
     Room room;
     boolean northWall;
     boolean eastWall;
     boolean southWall;
     boolean westWall;
-    int boardRow;
-    int boardColumn;
-    Piece piece;
+    Point point;
 
     public Location(Room room, String walls, int boardRow, int boardColumn){
         this.room = room;
@@ -14,21 +14,20 @@ public class Location {
         this.eastWall = walls.contains("E");
         this.southWall = walls.contains("S");
         this.westWall = walls.contains("W");
-        this.boardRow = boardRow;
-        this.boardColumn = boardColumn;
+        this.point = new Point(boardColumn, boardRow);
     }
 
     public boolean canMoveUp(){
-        return !northWall && boardRow > 0;
+        return !northWall && point.y > 0;
     }
 
     public boolean canMoveDown(){
-        return !southWall && boardRow < Board.HEIGHT;
+        return !southWall && point.y < Board.HEIGHT;
     }
     public boolean canMoveRight(){
-        return !eastWall && boardColumn > Board.WIDTH;
+        return !eastWall && point.x > Board.WIDTH;
     }
     public boolean canMoveLeft(){
-        return !westWall && boardColumn > 0;
+        return !westWall && point.x > 0;
     }
 }
