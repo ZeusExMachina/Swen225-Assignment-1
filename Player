@@ -1,31 +1,83 @@
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Scanner;
 
 public class Player {
+	private final Set<Card> hand;
+	private final String name;
+	public Game g;
 	
-	private String name;
-	private Card deck[];
-
+	
+	
 	public Player(String name) {
+		this.hand = new HashSet<Card>();
 		this.name = name;
 	}
 	
-	public int roll() {
-		int randomNum = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-		return randomNum;
+	public void giveCard(Card card) { hand.add(card); }
+	
+	public void playTurn(Game g) {
+		this.g = g;
 	}
-	public boolean suggest(Card c1, Card c2, Card c3) {
-		if(deck.contains(card?)) {
-			return true;
+	
+	public void clearHand() { hand.clear(); }
+	
+	public String toString() { return "name: " + name + ", in hand: " + hand.toString(); }
+	
+	public boolean suggest(String n1, String n2, String n3) {
+		Card c1 = g.getCard(n1);
+		Card c2 = g.getCard(n2);
+		Card c3 = g.getCard(n3);
+		while(c1 == null) {
+			g.getCard(n1);
 		}
-		else {return false;}
+		if(c2 == null) {
+			
+		}
+		if(c3 == null) {
+			
+		}
+		
+		CardTuple tuple = new CardTuple(c1,c2,c3);
+			
+		
 		
 	}
 	
-	public boolean refute(Card c) {
-		if(deck.contains(card?)) {
+	public boolean suggest(Game game) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Make a suggestion - type in 3 cards:");
+		Card firstCard = askForCard(game, scan);
+		Card secondCard = askForCard(game, scan);
+		Card thirdCard = askForCard(game, scan);
+		CardTuple suggestion = new CardTuple(firstCard, secondCard, thirdCard);
+		return game.refutationProcess(this, suggestion);
+	}
+	
+	public Card askForCard(Game game, Scanner scan) {
+		System.out.print("Card: ");
+		Card card = game.getCard(scan.nextLine());
+		while (card == null) {
+			System.out.println("Invalid card. Try again.\nCard:");
+			card = game.getCard(scan.nextLine());
+		}
+		return card;
+	}
+	
+	public boolean refute(CardTuple tup) {
+		if(tup.characterCard().equals(c)) {
 			return true;
 		}
-		else {return false;}
+		if(suggestion.weaponCard().equals(c)) {
+			return true;
+		}
+		if(suggestion.roomCard().equals(c)) {
+			return true;
+		}
+		else {
+			System.out.println("does not match");
+		    return false;
+		}
 	}
 	public String accuse(Card weapon, Card player, Card room) {
 		
