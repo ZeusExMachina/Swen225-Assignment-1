@@ -3,17 +3,33 @@ import java.util.*;
 public class Player {
 	private final Set<Card> hand;
 	private final String name;
+	/**
+	 * For generating random numbers, e.g. when rolling dice.
+	 */
+	private Random rand;
 	
 	public Player(String name) {
 		this.hand = new HashSet<Card>();
 		this.name = name;
+		this.rand = new Random();
 	}
 	
 	public void giveCard(Card card) { hand.add(card); }
 	
 	public void clearHand() { hand.clear(); }
 	
-	public String toString() { return "name: " + name + ", in hand: " + hand.toString(); }
+	/**
+	 * Roll two dice and get their sum. Two numbers are generated 
+	 * to try to mimic real dice.
+	 * 
+	 * @return the total of the two dice
+	 */
+	private Integer rollDice() {
+		System.out.println("Rolling...");
+		int first = rand.nextInt(6) + 1, second = rand.nextInt(6) + 1;
+		System.out.println("Rolled a " + first + " and a " + second);
+		return first + second;
+	}
 	
 	public Card suggest(Game game) {
 		Scanner scan = new Scanner(System.in);
@@ -34,4 +50,6 @@ public class Player {
 		}
 		return card;
 	}
+	
+	public String toString() { return "name: " + name + ", in hand: " + hand.toString(); }
 }
