@@ -29,13 +29,22 @@ public class CardTuple {
 	 * @param card is the card to set
 	 */
 	private void setCard(Card card) {
-		if (card.type() == Card.CardType.CHARACTER) { checkForDuplicates(charCard,card); }
-		if (card.type() == Card.CardType.WEAPON) { checkForDuplicates(weapCard,card); }
-		if (card.type() == Card.CardType.ROOM) { checkForDuplicates(roomCard,card); }
+		if (card.type() == Card.CardType.CHARACTER) { 
+			if (charCard != null) { throw new IllegalArgumentException("Duplicate card types found. CardTuple only accepts 1 card of each type. Cards type: " + card.type()); }
+			charCard = card;
+		}
+		if (card.type() == Card.CardType.WEAPON) { 
+			if (weapCard != null) { throw new IllegalArgumentException("Duplicate card types found. CardTuple only accepts 1 card of each type. Cards type: " + card.type()); }
+			weapCard = card;
+		}
+		if (card.type() == Card.CardType.ROOM) {
+			if (roomCard != null) { throw new IllegalArgumentException("Duplicate card types found. CardTuple only accepts 1 card of each type. Cards type: " + card.type()); }
+			roomCard = card;
+		}
 	}
 	
 	/**
-	 * Check if toSet has already been assigned something. 
+	 * Check if toSet has already been assigned something.
 	 * If so, then there are duplicate cards here.
 	 * 
 	 * @param toSet is one of the cards in this tuple to 
@@ -63,5 +72,12 @@ public class CardTuple {
 		}
 		if (cardTypesSeen.size() < 3) { return false; }
 		else { return true; }
+	}
+	
+	public String toString() {
+		return "characterCard = " + 
+	charCard.toString() + ", weaponCard = " + 
+				weapCard.toString() + ", roomCard = " + 
+	roomCard.toString();
 	}
 }

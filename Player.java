@@ -15,7 +15,7 @@ public class Player {
 	
 	public String toString() { return "name: " + name + ", in hand: " + hand.toString(); }
 	
-	public boolean suggest(Game game) {
+	public Card suggest(Game game) {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Make a suggestion - type in 3 cards:");
 		Card firstCard = askForCard(game, scan);
