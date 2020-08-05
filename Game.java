@@ -9,15 +9,10 @@ import java.awt.Point;
  */
 
 public class Game {
-	/** 
-	 * A set to store all the cards used for the murder condition.
-	 * (suggestion: maybe make a new class for 3-card tuples for easy comparing)
-	 */
-	private final Set<Card> murderConditions = new HashSet<Card>();
 	/**
-	 * A list of all the cards in the game. Only used during setup.
+	 * A collection of all the cards in the game, mapped to by their names.
 	 */
-	private final List<Card> allCards = new ArrayList<Card>();
+	private final Map<String,Card> allCards = new HashMap<String,Card>();
 	/**
 	 * A list of the names of all characters from Cluedo. Order goes clockwise starting from Miss Scarlet.
 	 */
@@ -26,6 +21,11 @@ public class Game {
 	 * A map of all players, and the player number they are associated with. Is implemented as a TreeMap to always maintain ordering of the key.
 	 */
 	private Map<Integer,Player> players = new TreeMap<Integer,Player>();
+	/** 
+	 * A set to store all the cards used for the murder condition.
+	 * (suggestion: maybe make a new class for 3-card tuples for easy comparing)
+	 */
+	private CardTuple murderConditions;
 	/**
 	 * The board associated with this game.
 	 */
@@ -78,6 +78,24 @@ public class Game {
 		return first + second;
 	}
 	
+	public Card getCard(String first) {
+		Card card = allCards.get(first);
+		if (card == null) { return null; }
+		else { return card; }
+	}
+	
+	public Card refutationProcess(Player suggester, CardTuple suggestion) {
+		Card refuteCard = null;
+		for (Map.Entry<Integer,Player> play : players.entrySet()) {
+			Player player = play.getValue();
+			if (!player.equals(suggester)) {
+				//refuteCard = player.refute(suggestion);
+				if (refuteCard != null) { break; }
+			}
+		}
+		return refuteCard;
+	}
+	
 	/**
 	 * Move a piece on the board to a new postion
 	 * 
@@ -86,6 +104,7 @@ public class Game {
 	 */
 	public void movePiece(String pieceName, Point newPos) {
 		// TODO: Tell the board to move the piece
+		
 	}
 	
 	// ----------------- PRE-GAME SETUP --------------------
@@ -101,10 +120,12 @@ public class Game {
 		gameOver = false;
 		// Create the cards and decide on the murder/win conditions
 		createAllCards();
-		setUpMurder();
+		List<Card> cardsToDeal = new ArrayList<Card>();
+		for (Map.Entry<String,Card> card : allCards.entrySet()) { cardsToDeal.add(card.getValue()); }
+		setUpMurder(cardsToDeal);
 		// Now create players and deal the rest of the cards to them
 		createPlayers(playerCount);
-		dealCards();
+		dealCards(cardsToDeal);
 	}
 	
 	/**
@@ -112,42 +133,46 @@ public class Game {
 	 */
 	private void createAllCards() {
 		allCards.clear();
-		allCards.add(new Card("Miss Scarlet", Card.CardType.CHARACTER));
-		allCards.add(new Card("Colonel Mustard", Card.CardType.CHARACTER));
-		allCards.add(new Card("Mrs. White", Card.CardType.CHARACTER));
-		allCards.add(new Card("Mr. Green", Card.CardType.CHARACTER));
-		allCards.add(new Card("Mrs. Peacock", Card.CardType.CHARACTER));
-		allCards.add(new Card("Professor Plum", Card.CardType.CHARACTER));
-		allCards.add(new Card("Candlestick", Card.CardType.WEAPON));
-		allCards.add(new Card("Dagger", Card.CardType.WEAPON));
-		allCards.add(new Card("Lead Pipe", Card.CardType.WEAPON));
-		allCards.add(new Card("Revolver", Card.CardType.WEAPON));
-		allCards.add(new Card("Rope", Card.CardType.WEAPON));
-		allCards.add(new Card("Spanner", Card.CardType.WEAPON));
-		allCards.add(new Card("Kitchen", Card.CardType.ROOM));
-		allCards.add(new Card("Ball Room", Card.CardType.ROOM));
-		allCards.add(new Card("Conservatory", Card.CardType.ROOM));
-		allCards.add(new Card("Dining Room", Card.CardType.ROOM));
-		allCards.add(new Card("Billiard Room", Card.CardType.ROOM));
-		allCards.add(new Card("Library", Card.CardType.ROOM));
-		allCards.add(new Card("Lounge", Card.CardType.ROOM));
-		allCards.add(new Card("Hall", Card.CardType.ROOM));
-		allCards.add(new Card("Study", Card.CardType.ROOM));
+		allCards.put("Miss Scarlet", new Card("Miss Scarlet", Card.CardType.CHARACTER));
+		allCards.put("Colonel Mustard", new Card("Colonel Mustard", Card.CardType.CHARACTER));
+		allCards.put("Mrs. White", new Card("Mrs. White", Card.CardType.CHARACTER));
+		allCards.put("Mr. Green", new Card("Mr. Green", Card.CardType.CHARACTER));
+		allCards.put("Mrs. Peacock", new Card("Mrs. Peacock", Card.CardType.CHARACTER));
+		allCards.put("Professor Plum", new Card("Professor Plum", Card.CardType.CHARACTER));
+		allCards.put("Candlestick", new Card("Candlestick", Card.CardType.WEAPON));
+		allCards.put("Dagger", new Card("Dagger", Card.CardType.WEAPON));
+		allCards.put("Lead Pipe", new Card("Lead Pipe", Card.CardType.WEAPON));
+		allCards.put("Revolver", new Card("Revolver", Card.CardType.WEAPON));
+		allCards.put("Rope", new Card("Rope", Card.CardType.WEAPON));
+		allCards.put("Spanner", new Card("Spanner", Card.CardType.WEAPON));
+		allCards.put("Kitchen", new Card("Kitchen", Card.CardType.ROOM));
+		allCards.put("Ball Room", new Card("Ball Room", Card.CardType.ROOM));
+		allCards.put("Conservatory", new Card("Conservatory", Card.CardType.ROOM));
+		allCards.put("Dining Room", new Card("Dining Room", Card.CardType.ROOM));
+		allCards.put("Billiard Room", new Card("Billiard Room", Card.CardType.ROOM));
+		allCards.put("Library", new Card("Library", Card.CardType.ROOM));
+		allCards.put("Lounge", new Card("Lounge", Card.CardType.ROOM));
+		allCards.put("Hall", new Card("Hall", Card.CardType.ROOM));
+		allCards.put("Study", new Card("Study", Card.CardType.ROOM));
 	}
 	
 	/**
 	 * Create the murder conditions (winning combination) by 
 	 * randomly selecting one Character, Weapon, and Room card.
 	 */
-	private void setUpMurder() {
-		murderConditions.clear();
-		Collections.shuffle(allCards);
+	private void setUpMurder(List<Card> cards) {
+		Collections.shuffle(cards);
+		Card charCard = null, weapCard = null, roomCard= null;
 		for (int i = 0; i < 3; i++) {
-			if (i == 0) { getMurderCard(Card.CardType.CHARACTER); }
-			if (i == 1) { getMurderCard(Card.CardType.WEAPON); }
-			if (i == 2) { getMurderCard(Card.CardType.ROOM); }
+			if (i == 0) { charCard = getMurderCard(cards, Card.CardType.CHARACTER); }
+			if (i == 1) { weapCard = getMurderCard(cards, Card.CardType.WEAPON); }
+			if (i == 2) { roomCard = getMurderCard(cards, Card.CardType.ROOM); }
 		}
-		//for (Card card : murderConditions) { System.out.println("murder Card: " + card.toString()); }
+		murderConditions = new CardTuple(charCard, weapCard, roomCard);
+		System.out.println(murderConditions.characterCard());
+		System.out.println(murderConditions.weaponCard());
+		System.out.println(murderConditions.roomCard());
+		System.out.println(murderConditions);
 	}
 	
 	/**
@@ -155,16 +180,16 @@ public class Game {
 	 * 
 	 * @param type is the type of card to look for
 	 */
-	private void getMurderCard(Card.CardType type)  {
+	private Card getMurderCard(List<Card> cards, Card.CardType type)  {
 		// Get a random card of a particular type (given by the "type" parameter)
 		Card murderCard = null;
-		for (Card card : allCards) { if (card.type() == type) { murderCard = card; break; } }
+		for (Card card : cards) { if (card.type() == type) { murderCard = card; break; } }
 		// Check if a card was selected at all.
 		// If not, there must not be any cards of that type in allCards
 		if (murderCard == null) { throw new NullPointerException("Murder card for type " + type + " not found. Check that cards of all types are added to the list of all cards."); }
-		else { 
-			murderConditions.add(murderCard);
-			allCards.remove(murderCard);
+		else {
+			cards.remove(murderCard);
+			return murderCard;
 		}
 	}
 	
@@ -177,7 +202,7 @@ public class Game {
 	private void createPlayers(int playerCount) {
 		selectPlayerCharacters(playerCount);
 		assignCharacters();
-		//for (Map.Entry<Integer,Player> player : players.entrySet()) { System.out.println(player.toString()); }
+		for (Map.Entry<Integer,Player> player : players.entrySet()) { System.out.println(player.toString()); }
 	}
 	
 	/**
@@ -213,15 +238,15 @@ public class Game {
 	 * Deal the all cards (except murder cards) to evenly between 
 	 * each player. Some players may end up with more than others.
 	 */
-	private void dealCards() {
-		while (allCards.size() > 0) {
+	private void dealCards(List<Card> cards) {
+		while (cards.size() > 0) {
 			for (Map.Entry<Integer,Player> player : players.entrySet()) {
-				player.getValue().giveCard(allCards.get(allCards.size()-1));
-				allCards.remove(allCards.size()-1);
-				if (allCards.size() < 1) { break; }
+				player.getValue().giveCard(cards.get(cards.size()-1));
+				cards.remove(cards.size()-1);
+				if (cards.size() < 1) { break; }
 			}
 		}
-		//for (Map.Entry<Integer,Player> player : players.entrySet()) { System.out.println(player.getValue().toString()); }
+		for (Map.Entry<Integer,Player> player : players.entrySet()) { System.out.println(player.getValue().toString()); }
 	}
 	
 	/**
