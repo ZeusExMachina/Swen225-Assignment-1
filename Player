@@ -1,23 +1,44 @@
 import java.util.Set;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Player {
-	private final Set<Card> hand;
+	private static Map<String, Card> hand;
 	private final String name;
 	public Game g;
 	
 	
 	
 	public Player(String name) {
-		this.hand = new HashSet<Card>();
+		this.hand = new HashMap<>();
 		this.name = name;
 	}
 	
-	public void giveCard(Card card) { hand.add(card); }
+	public void giveCard(Card card) { hand.put(card.name(),card); }
 	
-	public void playTurn(Game g) {
+	public boolean playTurn(Game g) {
 		this.g = g;
+		Scanner scan;
+		printCards();
+		System.out.println("Would you like to roll? (Y/N): ");
+		if(scan.nextLine().equals("Y")) {
+			//move
+			if(/*players in a room*/) {
+				System.out.print("Would you like to suggest? (Y/N): ");
+				if(scan.nextLine().equals("Y")) {
+					System.out.print("Character: ");
+					String cha = scan.next();
+					System.out.print("Weapon: ");
+					String weapon = scan.next();
+					System.out.print("Room: ");
+					String room = scan.next();
+					
+					CardTuple ct = new CardTuple(g.allCards.get(cha));
+				}
+			}
+		}
 	}
 	
 	public void clearHand() { hand.clear(); }
@@ -114,15 +135,16 @@ public class Player {
 		}
 		
 		
-	
-		
 	}
 	
-	private void printCards(Set<Card> refutes) {
-		
-		
+	public void printCards() {
+		for(Card c : hand) {
+			System.out.println(c.name());
+		}
 	}
+	
 	public String accuse(Card weapon, Card player, Card room) {
 		
 	}
 }
+
