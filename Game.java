@@ -56,7 +56,7 @@ public class Game {
 			for (Map.Entry<Integer,Player> play : players.entrySet()) {
 				// TODO: Tell the player to choose where to move, maybe display all possible board options
 				Player player = play.getValue();
-				//if(player.playTurn()) { gameOver = true; break; }
+				//if(player.playTurn(this)) { gameOver = true; break; }
 			}
 		}
 	}
@@ -101,11 +101,15 @@ public class Game {
 		
 	}
 	
+	/**
+	 * Compares 3 cards to the murder conditions.
+	 * 
+	 * @param accusation is the 3 cards (in a CardTuple) to 
+	 * 		  compare
+	 * @return whether or not they match
+	 */
 	public boolean checkAccusation(CardTuple accusation) {
-		if (murderConditions.equals(accusation)) { 
-			gameOver = true;
-			return true;
-		}
+		if (murderConditions.equals(accusation)) { return true; }
 		return false;
 	}
 	
