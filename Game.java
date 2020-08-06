@@ -98,17 +98,6 @@ public class Game {
 	}
 	
 	/**
-	 * Move a piece on the board to a new postion
-	 * 
-	 * @param pieceName is the name of the piece to move
-	 * @param newPos is the new position of the piece
-	 */
-	public void movePiece(String pieceName, Point newPos) {
-		// TODO: Tell the board to move the piece
-		
-	}
-	
-	/**
 	 * Compares 3 cards to the murder conditions.
 	 * 
 	 * @param accusation is the 3 cards (in a CardTuple) to 
@@ -118,6 +107,17 @@ public class Game {
 	public boolean checkAccusation(CardTuple accusation) {
 		if (murderConditions.equals(accusation)) { return true; }
 		return false;
+	}
+	
+	/**
+	 * Move a piece on the board to a new postion
+	 * 
+	 * @param pieceName is the name of the piece to move
+	 * @param newPos is the new position of the piece
+	 */
+	public void movePiece(String pieceName, Point newPos) {
+		// TODO: Tell the board to move the piece
+		
 	}
 	
 	// ----------------- PRE-GAME SETUP --------------------
@@ -266,24 +266,52 @@ public class Game {
 	 * Greet the players to the game and ask how many people will 
 	 * play.
 	 * 
+	 * @param scan is the scanner to get input from the console
 	 * @return the number of players
 	 */
-	private static Integer getPlayerCount() {
-		// Give a greeting and ask for the number of players
-		Scanner inputScanner = new Scanner(System.in);
+	private static Integer getPlayerCount(Scanner scan) {
 		System.out.print("Welcome to Cluedo!\nHow many players? (3-6 allowed).\nNumber of players: ");
-		String answer = inputScanner.nextLine();
+		String answer = scan.nextLine();
 		while (!answer.matches("[3456]")) {
 			System.out.print("Invalid input. Please enter the number of players (3-6 players only).\nNumber of players: ");
-			answer = inputScanner.nextLine();
+			answer = scan.nextLine();
 		}
-		inputScanner.close();
 		return Integer.parseInt(answer);
 	}
 	
+	/**
+	 * Ask the players if they want to start another game.
+	 * 
+	 * @param scan is the scanner to get input from the console
+	 * @return whether or not a new game should be started
+	 */
+	private static boolean askToPlayAgain(Scanner scan) {
+		String input;
+		System.out.print("Would you like to play again? (yes/no): ");
+		while (true) {
+			input = scan.nextLine();
+			if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("yes")) { return true; } 
+			else if (input.equalsIgnoreCase("n") || input.equalsIgnoreCase("no")) { return false; }
+			System.out.print("Yes or no answers only: ");
+		}
+	}
+	
 	public static void main(String[] args) {
-		int playerCount = getPlayerCount();
-		Game game = new Game(playerCount);
-		//game.play();
+		Game game;
+		int playerCount;
+		boolean playing = true;
+		Scanner scan = new Scanner(System.in);
+		while (playing) {
+			// Set up and play the game
+			playerCount = getPlayerCount(scan);
+			System.out.println("New game started");
+			game = new Game(playerCount);
+			//game.setup();
+			//game.play();
+			// Ask to play again
+			playing = askToPlayAgain(scan);
+		}
+		scan.close();
+		System.out.println("Cluedo game ended. Thanks for playing!");
 	}
 }
