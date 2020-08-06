@@ -44,20 +44,6 @@ public class CardTuple {
 	}
 	
 	/**
-	 * Check if toSet has already been assigned something.
-	 * If so, then there are duplicate cards here.
-	 * 
-	 * @param toSet is one of the cards in this tuple to 
-	 * 		  be set
-	 * @param card is the card that toSet is trying to be 
-	 * 		  set as
-	 */
-	private void checkForDuplicates(Card toSet, Card card) {
-		if (toSet != null) { throw new IllegalArgumentException("Duplicate card types found. CardTuple only accepts 1 card of each type. Cards type: " + card.type()); }
-		toSet = card;
-	}
-	
-	/**
 	 * Checks whether the cards given each have a different 
 	 * type (i.e. 1 character, 1 weapon, and 1 room card)
 	 * 
@@ -75,9 +61,6 @@ public class CardTuple {
 	}
 	
 	public String toString() {
-		return "characterCard = " + 
-	charCard.toString() + ", weaponCard = " + 
-				weapCard.toString() + ", roomCard = " + 
-	roomCard.toString();
+		return "character: " + charCard.toString() + ", weapon: " + weapCard.toString() + ", roomCard: " + roomCard.toString();
 	}
 }

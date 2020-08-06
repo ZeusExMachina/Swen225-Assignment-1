@@ -120,6 +120,10 @@ public class Game {
 		
 	}
 	
+	public void moveViaSuggestion(CardTuple suggestion) {
+		
+	}
+	
 	// ----------------- PRE-GAME SETUP --------------------
 	
 	/**
