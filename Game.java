@@ -53,9 +53,10 @@ public class Game {
 	 */
 	public void play() {
 		while (!gameOver) {
-			for (Map.Entry<Integer,Player> player : players.entrySet()) {
+			for (Map.Entry<Integer,Player> play : players.entrySet()) {
 				// TODO: Tell the player to choose where to move, maybe display all possible board options
-				
+				Player player = play.getValue();
+				//player.playTurn();
 			}
 		}
 	}
@@ -98,6 +99,11 @@ public class Game {
 	public void movePiece(String pieceName, Point newPos) {
 		// TODO: Tell the board to move the piece
 		
+	}
+	
+	public boolean checkAccusation(CardTuple accusation) {
+		if (murderConditions.equals(accusation)) { return true; }
+		return false;
 	}
 	
 	// ----------------- PRE-GAME SETUP --------------------
@@ -193,6 +199,7 @@ public class Game {
 	 * @param playerCount is the number of players to create
 	 */
 	private void createPlayers(int playerCount) {
+		players.clear();
 		selectPlayerCharacters(playerCount);
 		assignCharacters();
 		for (Map.Entry<Integer,Player> player : players.entrySet()) { System.out.println(player.toString()); }
@@ -204,7 +211,6 @@ public class Game {
 	 * @param playerCount is the number of characters to select
 	 */
 	private void selectPlayerCharacters(int playerCount) {
-		players.clear();
 		List<String> charactersNames = new ArrayList<String>(characters);
 		Collections.shuffle(charactersNames);
 		String charName = "";
