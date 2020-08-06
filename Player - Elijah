@@ -162,8 +162,8 @@ public class Player {
 		} else {
 			System.out.println("Make a suggestion - type in 3 cards:");
 			CardTuple accusation = getThreeCards(game);
-			
+			canAccuse = false;
+			return game.checkAccusation(accusation);
 		}
 	}
 }
-
