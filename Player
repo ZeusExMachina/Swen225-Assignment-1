@@ -64,20 +64,63 @@ public class Player {
 		return card;
 	}
 	
-	public boolean refute(CardTuple tup) {
-		if(tup.characterCard().equals(c)) {
-			return true;
+	public Card refute(CardTuple tup) {
+		private Set<Card> refuteOptions;
+		Card rCard = null;
+		
+		for(Card c : hand) {
+			if(tup.characterCard().equals(c)) {
+				refuteOptions.add(c);
+			}
+			if(tup.weaponCard().equals(c)) {
+				refuteOptions.add(c);;
+			}
+			if(tup.roomCard().equals(c)) {
+				refuteOptions.add(c);
+			}
+			
+			
 		}
-		if(suggestion.weaponCard().equals(c)) {
-			return true;
+		
+		if(refuteOptions != null) {
+			Card refuteCard;
+			Scanner scan;
+			System.out.println("What card would you like to refute with? (W/C/R)");
+			for(Card c : refuteOptions) {
+				System.out.println(c.getName());
+			}
+			
+			while(refuteCard == null) {
+				String choice = scan.nextLine();
+				
+				if(choice.equals("W") && tup.weaponCard() != null) {
+					refuteCard = tup.weaponCard();
+				}
+				
+				if(choice.equals("C") && tup.weaponCard() != null) {
+					refuteCard =  tup.characterCard();
+				}
+				
+				if(choice.equals("R") && tup.weaponCard() != null) {
+					refuteCard = tup.roomCard();
+				}
+				
+				else { System.out.println("Not a valid option please type either W,C or R");}
+			}
+			
+			return refuteCard;
+			
+			
 		}
-		if(suggestion.roomCard().equals(c)) {
-			return true;
-		}
-		else {
-			System.out.println("does not match");
-		    return false;
-		}
+		
+		
+	
+		
+	}
+	
+	private void printCards(Set<Card> refutes) {
+		
+		
 	}
 	public String accuse(Card weapon, Card player, Card room) {
 		
