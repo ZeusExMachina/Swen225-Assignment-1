@@ -115,9 +115,9 @@ public class Game {
 	 * @param pieceName is the name of the piece to move
 	 * @param newPos is the new position of the piece
 	 */
-	public void movePiece(String pieceName, Point newPos) {
+	public boolean movePlayer(Player player, String direction) {
 		// TODO: Tell the board to move the piece
-		
+		return board.movePlayer(player,direction);
 	}
 	
 	public void moveViaSuggestion(CardTuple suggestion) {
