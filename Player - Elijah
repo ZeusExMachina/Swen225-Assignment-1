@@ -20,7 +20,7 @@ public class Player {
 	
 	public boolean playTurn(Game g) {
 		this.g = g;
-		Scanner scan;
+		Scanner scan = new Scanner(System.in);
 		printCards();
 		System.out.println("Would you like to roll? (Y/N): ");
 		if(scan.nextLine().equals("Y")) {
@@ -167,3 +167,4 @@ public class Player {
 		}
 	}
 }
+
