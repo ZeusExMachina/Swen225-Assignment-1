@@ -52,13 +52,20 @@ public class Game {
 	 * game is over.
 	 */
 	public void play() {
+		int playerNum;
 		while (!gameOver) {
-			for (Map.Entry<Integer,Player> play : players.entrySet()) {
+			for (int i = 1; i <= players.size(); i++) {
 				// TODO: Tell the player to choose where to move, maybe display all possible board options
-				Player player = play.getValue();
-				//if(player.playTurn(this)) { gameOver = true; break; }
+				playerNum = i;
+				//if(players.get(playerNum).playTurn(this)) { gameOver = true; break; }
 			}
+			/*for (Map.Entry<Integer,Player> play : players.entrySet()) {
+				
+				player = play.getValue();
+				//if(player.playTurn(this)) { gameOver = true; break; }
+			}*/
 		}
+		//System.out.println("Congratulations! Player " + playerNum + " (" + players.get(playerNum).name() + ") found the correct combination! They won!");
 	}
 	
 	/**
@@ -277,5 +284,6 @@ public class Game {
 	public static void main(String[] args) {
 		int playerCount = getPlayerCount();
 		Game game = new Game(playerCount);
+		//game.play();
 	}
 }
