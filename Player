@@ -65,7 +65,7 @@ public class Player {
 	}
 	
 	public Card refute(CardTuple tup) {
-		private Set<Card> refuteOptions;
+		Set<Card> refuteOptions = new HashSet<Card>();
 		Card rCard = null;
 		
 		for(Card c : hand) {
@@ -82,7 +82,7 @@ public class Player {
 			
 		}
 		
-		if(refuteOptions != null) {
+		if(!refuteOptions.isEmpty()) {
 			Card refuteCard;
 			Scanner scan;
 			System.out.println("What card would you like to refute with? (W/C/R)");
