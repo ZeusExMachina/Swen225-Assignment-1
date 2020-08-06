@@ -56,7 +56,7 @@ public class Game {
 			for (Map.Entry<Integer,Player> play : players.entrySet()) {
 				// TODO: Tell the player to choose where to move, maybe display all possible board options
 				Player player = play.getValue();
-				//player.playTurn();
+				//if(player.playTurn()) { gameOver = true; break; }
 			}
 		}
 	}
@@ -102,7 +102,10 @@ public class Game {
 	}
 	
 	public boolean checkAccusation(CardTuple accusation) {
-		if (murderConditions.equals(accusation)) { return true; }
+		if (murderConditions.equals(accusation)) { 
+			gameOver = true;
+			return true;
+		}
 		return false;
 	}
 	
