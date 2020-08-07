@@ -256,6 +256,10 @@ public class Board {
         }
     }
 
+    /**
+     * Moves
+     * @param suggestion
+     */
     public void movePiece(CardTuple suggestion){
         Piece suggestedCharacter = pieces.get(suggestion.characterCard().getName());
         Room suggestedRoom = rooms.get(suggestion.roomCard().getName());
@@ -268,6 +272,16 @@ public class Board {
         }
     }
 
+
+    /**
+     * Performs a move and returns true, if the move is illegal
+     * no move is performed and it returns false.
+     *
+     * @param player The player to move
+     * @param direction String containing one of W,A,S,D to indicate
+     *                  direction of movement
+     * @return True if the move was completed
+     */
     public boolean movePlayer(Player player, String direction){
         Piece playerPiece = pieces.get(player.getName());
         Location playerLocation = playerPiece.location();
@@ -299,11 +313,22 @@ public class Board {
         return false;
     }
 
+    /**
+     * Returns if a player is in one of the Rooms which is not
+     * a passageway.
+     * @param player The player
+     * @return True if the player is in a Room
+     */
     public boolean checkPlayerInRoom(Player player){
         Room playerRoom = pieces.get(player.getName()).location().room;
         return playerRoom != null && playerRoom != rooms.get("Passageway");
     }
 
+    /**
+     * Returns the Room a player is currently in
+     * @param player The player
+     * @return A Room object
+     */
     public Room getPlayerRoom(Player player){
         return pieces.get(player.getName()).location().room;
     }
