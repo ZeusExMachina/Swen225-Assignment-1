@@ -28,17 +28,57 @@ public class Player {
 			if(/*players in a room*/) {
 				System.out.print("Would you like to suggest? (Y/N): ");
 				if(scan.nextLine().equals("Y")) {
+					Card charCard;
 					System.out.print("Character: ");
-					String cha = scan.next();
+				    charCard = isCard(scan.nextLine(),Card.CardType.CHARACTER);
+				    if(charCard == null) {
+				    	while(charCard == null) {
+				    		System.out.println("Not a valid Character card try again: ");
+				    		charCard = isCard(scan.nextLine(),Card.CardType.CHARACTER);
+				    	}
+				    }
+				    
+				    Card weapCard;
 					System.out.print("Weapon: ");
-					String weapon = scan.next();
-					System.out.print("Room: ");
-					String room = scan.next();
+				    weapCard = isCard(scan.nextLine(),Card.CardType.WEAPON);
+				    if(weapCard == null) {
+				    	while(weapCard == null) {
+				    		System.out.println("Not a valid Weapon card try again: ");
+				    		weapCard = isCard(scan.nextLine(),Card.CardType.WEAPON);
+				    	}
+				    }
+				    
+				    Card roomCard = g.getCard(g.getPlayerRoom(this).getName());
 					
-					CardTuple ct = new CardTuple(g.allCards.get(cha));
+				    
+					
+					CardTuple cardTup = new CardTuple(charCard,weapCard,roomCard);
+					g.moveViaSuggestion(cardTup);
+					
+					Card refuteCard = g.refutationProcess(this, cardTup);
+					if (refuteCard == null) {
+						System.out.println("Your suggestion " + cardTup.toString() + " was not refuted!");
+						return false;
+					} else {
+						System.out.println("Your suggestion " + cardTup.toString() + " was refuted by the card " + refuteCard.toString());
+						return true;
+					}
 				}
 			}
 		}
+	}
+	
+	
+	
+	private Card isCard(String card, Card.CardType ct) {
+		Card returnCard = g.getCard(card);
+		if(returnCard != null) {
+			if(returnCard.type().equals(ct)) {
+				return returnCard;
+			}
+			return returnCard;
+		}
+		return returnCard;
 	}
 	
 	public void clearHand() { hand.clear(); }
