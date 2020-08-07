@@ -41,8 +41,7 @@ public class Game {
 	 * 
 	 * @param playerCount is the number of players
 	 */
-	public Game() {
-	}
+	public Game() {}
 	
 	// ----------------- WHILE GAME RUNS -------------------
 	
