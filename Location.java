@@ -24,14 +24,35 @@ public class Location {
         this.point = new Point(boardColumn, boardRow);
     }
 
-    public boolean canMoveUp(){ return !northWall && point.y > 0; }
-    public boolean canMoveDown(){
-        return !southWall && point.y < Board.HEIGHT;
+    public boolean canMoveUp(Board board){
+        if(point.y <= 0){
+            return false;
+        }
+        boolean squareIsFree = board.currentBoard[point.y-1][point.x].occupied;
+        return !northWall && squareIsFree;
     }
-    public boolean canMoveRight(){
-        return !eastWall && point.x > Board.WIDTH;
+
+    public boolean canMoveDown(Board board){
+        if(point.y >= Board.HEIGHT){
+            return false;
+        }
+        boolean squareIsFree = board.currentBoard[point.y+1][point.x].occupied;
+        return !southWall && squareIsFree;
     }
-    public boolean canMoveLeft(){
-        return !westWall && point.x > 0;
+
+    public boolean canMoveRight(Board board){
+        if(point.x <= Board.WIDTH){
+            return false;
+        }
+        boolean squareIsFree = board.currentBoard[point.y][point.x+1].occupied;
+        return !eastWall && squareIsFree;
+    }
+
+    public boolean canMoveLeft(Board board){
+        if(point.x <= 0){
+            return false;
+        }
+        boolean squareIsFree = board.currentBoard[point.y][point.x-1].occupied;
+        return !westWall && squareIsFree;
     }
 }
