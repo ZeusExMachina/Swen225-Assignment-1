@@ -228,9 +228,7 @@ public class Board {
     /**
      * Place the name of the Rooms onto the Board
      */
-    private void drawLabels(){
-
-    }
+    private void drawLabels(){}
 
     /**
      * Helper function for placeWallsAndRooms(), determines
@@ -271,14 +269,31 @@ public class Board {
     }
 
     public boolean movePlayer(Player player, String direction){
+        Piece playerPiece = pieces.get(player.getName());
+        Location playerLocation = playerPiece.location();
+        int x = playerLocation.point.x;
+        int y = playerLocation.point.y;
+
         switch(direction){
             case "W":
+                if(playerLocation.canMoveUp(this)){
+                    playerPiece.setLocation(currentBoard[y-1][x]);
+                }
                 break;
             case "A":
+                if(playerLocation.canMoveLeft(this)){
+                    playerPiece.setLocation(currentBoard[y][x-1]);
+                }
                 break;
             case "S":
+                if(playerLocation.canMoveRight(this)){
+                    playerPiece.setLocation(currentBoard[y][x+1]);
+                }
                 break;
             case "D":
+                if(playerLocation.canMoveDown(this)){
+                    playerPiece.setLocation(currentBoard[y+1][x]);
+                }
                 break;
         }
         return false;
