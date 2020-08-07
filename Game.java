@@ -52,13 +52,14 @@ public class Game {
 	 * the murder condition, in which case they win and the 
 	 * game is over.
 	 */
-	public void play() {
+	public void play(Scanner scan) {
 		while (!gameOver) {
-			if(players.get(turnNum).playTurn(this)) { gameOver = true; break; }
+			System.out.println("Player " + turnNum + "'s [" + players.get(turnNum).getName() + "] turn");
+			if(players.get(turnNum).playTurn(this,scan)) { gameOver = true; break; }
 			turnNum++;
 			if (turnNum > players.size()) { turnNum = 1; }
 		}
-		//System.out.println("Congratulations! Player " + turnNum + " (" + players.get(playerNum).name() + ") found the correct combination! They won!");
+		System.out.println("Congratulations! Player " + turnNum + " (" + players.get(turnNum).getName() + ") found the correct combination! They won!");
 	}
 	
 	/**
@@ -78,7 +79,7 @@ public class Game {
 	 * @return the card used to refute the suggestion, if any.
 	 * 		   If there is no refutation card, return null.
 	 */
-	public Card refutationProcess(Player suggester, CardTuple suggestion) {
+	public Card refutationProcess(Player suggester, CardTuple suggestion, Scanner scan) {
 		Card refuteCard = null;
 		int playerNum;
 		Player player;
@@ -89,7 +90,8 @@ public class Game {
 			// Get the player and ask them to refute
 			player = players.get(playerNum);
 			if (!player.equals(suggester)) {
-				refuteCard = player.refute(suggestion);
+				System.out.println("Player " + playerNum + " to try to refute Player " + turnNum + "'s suggestion");
+				refuteCard = player.refute(suggestion,scan);
 				if (refuteCard != null) { break; }
 			}
 		}
@@ -109,23 +111,43 @@ public class Game {
 	}
 	
 	/**
-	 * Move a piece on the board to a new postion
+	 * Move a player piece on the board to a new postion.
 	 * 
 	 * @param pieceName is the name of the piece to move
 	 * @param newPos is the new position of the piece
+	 * @return whether or not the move was successful
 	 */
 	public boolean movePlayer(Player player, String direction) {
 		return board.movePlayer(player,direction);
 	}
 	
+	/**
+	 * Move a player and a weapon to a room according to 
+	 * a given suggestion.
+	 * 
+	 * @param suggestion is the suggestion that holds the  
+	 * 		  details of this move (what and where to move)
+	 */
 	public void moveViaSuggestion(CardTuple suggestion) {
 		board.movePiece(suggestion);
 	}
-
+	
+	/**
+	 * Check on the board if the given player is in a room.
+	 * 
+	 * @param player is the player to check for
+	 * @return whether or not the player is in a room
+	 */
 	public boolean checkPlayerInRoom(Player player){
 		return board.checkPlayerInRoom(player);
 	}
-
+	
+	/**
+	 * Get the room that the player is currently in.
+	 * 
+	 * @param player is the player to check for
+	 * @return the room the player is in
+	 */
 	public Room getPlayerRoom(Player player){
 		return board.getPlayerRoom(player);
 	}
@@ -318,7 +340,7 @@ public class Game {
 			System.out.println("New game started");
 			game = new Game(playerCount);
 			//game.setup();
-			//game.play();
+			//game.play(scan);
 			// Ask to play again
 			playing = askToPlayAgain(scan);
 		}
