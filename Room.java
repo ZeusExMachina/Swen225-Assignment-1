@@ -1,5 +1,4 @@
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Room {
     private String name;
@@ -19,5 +18,16 @@ public class Room {
 
     public void addLocation(Location location){
         locations.add(location);
+    }
+
+    public Location getRandomRoomLocation(){
+        List<Location> allLocations = new ArrayList<>(locations);
+        Collections.shuffle(allLocations);
+        for (Location loc : allLocations) {
+            if (!loc.occupied) {
+                return loc;
+            }
+        }
+        return null;
     }
 }
