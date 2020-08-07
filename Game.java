@@ -41,8 +41,7 @@ public class Game {
 	 * 
 	 * @param playerCount is the number of players
 	 */
-	public Game(int playerCount) {
-		setup(playerCount);
+	public Game() {
 	}
 	
 	// ----------------- WHILE GAME RUNS -------------------
@@ -119,6 +118,7 @@ public class Game {
 	 */
 	public boolean movePlayer(Player player, String direction) {
 		return board.movePlayer(player,direction);
+		// then update board screen
 	}
 	
 	/**
@@ -161,7 +161,7 @@ public class Game {
 	 * 		  in the game
 	 */
 	private void setup(int playerCount) {
-		board = new Board();
+		//board = new Board();
 		turnNum = 1;
 		gameOver = false;
 		// Create the cards and decide on the murder/win conditions
@@ -215,10 +215,10 @@ public class Game {
 			if (i == 2) { roomCard = getMurderCard(cards, Card.CardType.ROOM); }
 		}
 		murderConditions = new CardTuple(charCard, weapCard, roomCard);
-		System.out.println(murderConditions.characterCard());
-		System.out.println(murderConditions.weaponCard());
-		System.out.println(murderConditions.roomCard());
-		System.out.println(murderConditions);
+		//System.out.println(murderConditions.characterCard());
+		//System.out.println(murderConditions.weaponCard());
+		//System.out.println(murderConditions.roomCard());
+		//System.out.println(murderConditions);
 	}
 	
 	/**
@@ -249,7 +249,7 @@ public class Game {
 		players.clear();
 		selectPlayerCharacters(playerCount);
 		assignCharacters();
-		for (Map.Entry<Integer,Player> player : players.entrySet()) { System.out.println(player.toString()); }
+		//for (Map.Entry<Integer,Player> player : players.entrySet()) { System.out.println(player.toString()); }
 	}
 	
 	/**
@@ -292,7 +292,7 @@ public class Game {
 				if (cards.size() < 1) { break; }
 			}
 		}
-		for (Map.Entry<Integer,Player> player : players.entrySet()) { System.out.println(player.getValue().toString()); }
+		//for (Map.Entry<Integer,Player> player : players.entrySet()) { System.out.println(player.getValue().toString()); }
 	}
 	
 	/**
@@ -338,9 +338,9 @@ public class Game {
 			// Set up and play the game
 			playerCount = getPlayerCount(scan);
 			System.out.println("New game started");
-			game = new Game(playerCount);
-			//game.setup();
-			//game.play(scan);
+			game = new Game();
+			game.setup(playerCount);
+			game.play(scan);
 			// Ask to play again
 			playing = askToPlayAgain(scan);
 		}
