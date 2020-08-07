@@ -122,7 +122,6 @@ public class Player {
 		}
 		// Choose a card to use to refute, if any
 		if(!refuteOptions.isEmpty()) {
-			String input;
 			System.out.println("What card would you like to refute with?");
 			for(Map.Entry<String,Card> refute : refuteOptions.entrySet()) { System.out.print(refute.getKey()); }
 			while (true) {
