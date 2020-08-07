@@ -29,16 +29,16 @@ public class CardTuple {
 	 * @param card is the card to set
 	 */
 	private void setCard(Card card) {
-		if (card.type() == Card.CardType.CHARACTER) { 
-			if (charCard != null) { throw new IllegalArgumentException("Duplicate card types found. CardTuple only accepts 1 card of each type. Cards type: " + card.type()); }
+		if (card.getType() == Card.CardType.CHARACTER) { 
+			if (charCard != null) { throw new IllegalArgumentException("Duplicate card types found. CardTuple only accepts 1 card of each type. Cards type: " + card.getType()); }
 			charCard = card;
 		}
-		if (card.type() == Card.CardType.WEAPON) { 
-			if (weapCard != null) { throw new IllegalArgumentException("Duplicate card types found. CardTuple only accepts 1 card of each type. Cards type: " + card.type()); }
+		if (card.getType() == Card.CardType.WEAPON) { 
+			if (weapCard != null) { throw new IllegalArgumentException("Duplicate card types found. CardTuple only accepts 1 card of each type. Cards type: " + card.getType()); }
 			weapCard = card;
 		}
-		if (card.type() == Card.CardType.ROOM) {
-			if (roomCard != null) { throw new IllegalArgumentException("Duplicate card types found. CardTuple only accepts 1 card of each type. Cards type: " + card.type()); }
+		if (card.getType() == Card.CardType.ROOM) {
+			if (roomCard != null) { throw new IllegalArgumentException("Duplicate card types found. CardTuple only accepts 1 card of each type. Cards type: " + card.getType()); }
 			roomCard = card;
 		}
 	}
@@ -52,9 +52,9 @@ public class CardTuple {
 	public static boolean validTuple(Card first, Card second, Card third) {
 		Set<Card.CardType> cardTypesSeen = new HashSet<Card.CardType>();
 		for (int i = 0; i < 3; i++) {
-			if (i == 0) { cardTypesSeen.add(first.type()); }
-			if (i == 1) { cardTypesSeen.add(second.type()); }
-			if (i == 2) { cardTypesSeen.add(third.type()); }
+			if (i == 0) { cardTypesSeen.add(first.getType()); }
+			if (i == 1) { cardTypesSeen.add(second.getType()); }
+			if (i == 2) { cardTypesSeen.add(third.getType()); }
 		}
 		if (cardTypesSeen.size() < 3) { return false; }
 		else { return true; }
