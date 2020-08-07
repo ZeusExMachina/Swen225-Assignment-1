@@ -10,8 +10,8 @@ public class Card {
 		this.type = type;
 	}
 	
-	public String name() { return name; }
-	public CardType type() { return type; }
+	public String getName() { return name; }
+	public CardType getType() { return type; }
 	
 	public String toString() { return "name: " + name + ", type: " + type; }
 }
