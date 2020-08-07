@@ -2,7 +2,7 @@ import java.util.*;
 
 /**
  * Sets up the game and holds the connection between players 
- * and the board. WIP
+ * and the board.
  * 
  * @author Elijah Guarina
  */
