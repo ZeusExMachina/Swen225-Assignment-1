@@ -1,5 +1,11 @@
 import java.awt.*;
 
+/**
+ * This Location class holds all the information about each
+ * square on the Cludeo board.
+ *
+ * @author Jared Boult
+ */
 public class Location {
     Room room;
     boolean northWall;
@@ -7,6 +13,7 @@ public class Location {
     boolean southWall;
     boolean westWall;
     Point point;
+    boolean occupied;
 
     public Location(Room room, String walls, int boardRow, int boardColumn){
         this.room = room;
@@ -17,10 +24,7 @@ public class Location {
         this.point = new Point(boardColumn, boardRow);
     }
 
-    public boolean canMoveUp(){
-        return !northWall && point.y > 0;
-    }
-
+    public boolean canMoveUp(){ return !northWall && point.y > 0; }
     public boolean canMoveDown(){
         return !southWall && point.y < Board.HEIGHT;
     }
