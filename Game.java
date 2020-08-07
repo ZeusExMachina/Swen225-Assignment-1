@@ -115,12 +115,19 @@ public class Game {
 	 * @param newPos is the new position of the piece
 	 */
 	public boolean movePlayer(Player player, String direction) {
-		// TODO: Tell the board to move the piece
 		return board.movePlayer(player,direction);
 	}
 	
 	public void moveViaSuggestion(CardTuple suggestion) {
-		
+		board.movePiece(suggestion);
+	}
+
+	public boolean checkPlayerInRoom(Player player){
+		return board.checkPlayerInRoom(player);
+	}
+
+	public Room getPlayerRoom(Player player){
+		return board.getPlayerRoom(player);
 	}
 	
 	// ----------------- PRE-GAME SETUP --------------------
