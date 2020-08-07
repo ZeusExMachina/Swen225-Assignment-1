@@ -30,6 +30,7 @@ public class Game {
 	 * The board associated with this game.
 	 */
 	private Board board;
+	private int turnNum;
 	/**
 	 * A flag for if the game is over or not.
 	 */
@@ -52,15 +53,12 @@ public class Game {
 	 * game is over.
 	 */
 	public void play() {
-		int playerNum;
 		while (!gameOver) {
-			for (int i = 1; i <= players.size(); i++) {
-				// TODO: Tell the player to choose where to move, maybe display all possible board options
-				playerNum = i;
-				if(players.get(playerNum).playTurn(this)) { gameOver = true; break; }
-			}
+			if(players.get(turnNum).playTurn(this)) { gameOver = true; break; }
+			turnNum++;
+			if (turnNum > players.size()) { turnNum = 1; }
 		}
-		//System.out.println("Congratulations! Player " + playerNum + " (" + players.get(playerNum).name() + ") found the correct combination! They won!");
+		//System.out.println("Congratulations! Player " + turnNum + " (" + players.get(playerNum).name() + ") found the correct combination! They won!");
 	}
 	
 	/**
@@ -82,10 +80,16 @@ public class Game {
 	 */
 	public Card refutationProcess(Player suggester, CardTuple suggestion) {
 		Card refuteCard = null;
-		for (Map.Entry<Integer,Player> play : players.entrySet()) {
-			Player player = play.getValue();
+		int playerNum;
+		Player player;
+		for (int i = 1; i <= players.size(); i++) {
+			// Calculate the correct player number to get from the collection of players
+			playerNum = i + turnNum;
+			if (playerNum > players.size()) { playerNum -= players.size(); }
+			// Get the player and ask them to refute
+			player = players.get(playerNum);
 			if (!player.equals(suggester)) {
-				//refuteCard = player.refute(suggestion);
+				refuteCard = player.refute(suggestion);
 				if (refuteCard != null) { break; }
 			}
 		}
@@ -129,6 +133,7 @@ public class Game {
 	 */
 	private void setup(int playerCount) {
 		board = new Board();
+		turnNum = 1;
 		gameOver = false;
 		// Create the cards and decide on the murder/win conditions
 		createAllCards();
@@ -195,7 +200,7 @@ public class Game {
 	private Card getMurderCard(List<Card> cards, Card.CardType type)  {
 		// Get a random card of a particular type (given by the "type" parameter)
 		Card murderCard = null;
-		for (Card card : cards) { if (card.type() == type) { murderCard = card; break; } }
+		for (Card card : cards) { if (card.getType() == type) { murderCard = card; break; } }
 		// Check if a card was selected at all.
 		// If not, there must not be any cards of that type in allCards
 		if (murderCard == null) { throw new NullPointerException("Murder card for type " + type + " not found. Check that cards of all types are added to the list of all cards."); }
