@@ -1,5 +1,4 @@
 import java.util.*;
-import java.awt.Point;
 
 /**
  * Sets up the game and holds the connection between players 
