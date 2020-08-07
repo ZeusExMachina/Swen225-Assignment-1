@@ -130,24 +130,6 @@ public class Player {
 				if (card != null) { return card; }
 				else { System.out.println("Not a valid option. Please enter the name of the card"); }
 			}
-			/*while(refuteCard == null) {
-				String choice = scan.nextLine();
-				
-				if(choice.equals("W") && tup.weaponCard() != null) {
-					refuteCard = tup.weaponCard();
-				}
-				
-				if(choice.equals("C") && tup.weaponCard() != null) {
-					refuteCard =  tup.characterCard();
-				}
-				
-				if(choice.equals("R") && tup.weaponCard() != null) {
-					refuteCard = tup.roomCard();
-				}
-				
-				else { System.out.println("Not a valid option please type either W,C or R");}
-			}
-			return refuteCard;*/
 		} else {
 			System.out.println("No card was found to refute");
 			return null;
@@ -156,8 +138,9 @@ public class Player {
 	
 	public void printCards() {
 		for(Map.Entry<String,Card> card : hand.entrySet()) {
-			System.out.println(card.getValue().getName());
+			System.out.print(card.getValue().getName() + "|");
 		}
+		System.out.println("");
 	}
 	
 	public boolean accuse(Game game, Scanner scan) {
