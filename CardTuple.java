@@ -61,6 +61,6 @@ public class CardTuple {
 	}
 	
 	public String toString() {
-		return "character: " + charCard.toString() + ", weapon: " + weapCard.toString() + ", roomCard: " + roomCard.toString();
+		return charCard.getName() + " with the " + weapCard.getName() + " in the " + roomCard.getName();
 	}
 }
