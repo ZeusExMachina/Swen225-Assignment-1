@@ -43,23 +43,6 @@ public class CardTuple {
 		}
 	}
 	
-	/**
-	 * Checks whether the cards given each have a different 
-	 * type (i.e. 1 character, 1 weapon, and 1 room card)
-	 * 
-	 * @return whether the cards are valid for a tuple
-	 */
-	public static boolean validTuple(Card first, Card second, Card third) {
-		Set<Card.CardType> cardTypesSeen = new HashSet<Card.CardType>();
-		for (int i = 0; i < 3; i++) {
-			if (i == 0) { cardTypesSeen.add(first.getType()); }
-			if (i == 1) { cardTypesSeen.add(second.getType()); }
-			if (i == 2) { cardTypesSeen.add(third.getType()); }
-		}
-		if (cardTypesSeen.size() < 3) { return false; }
-		else { return true; }
-	}
-	
 	public String toString() {
 		return charCard.getName() + " with the " + weapCard.getName() + " in the " + roomCard.getName();
 	}
