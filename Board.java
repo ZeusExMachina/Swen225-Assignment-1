@@ -22,7 +22,6 @@ public class Board {
         setupRooms();
         loadBoard();
         setupPieces();
-        printLegend();
     }
 
     /**
@@ -272,6 +271,10 @@ public class Board {
         }
     }
 
+    public void placePlayerInRoom(Player player){
+
+    }
+
 
     /**
      * Performs a move and returns true, if the move is illegal
@@ -292,21 +295,25 @@ public class Board {
             case "W":
                 if(playerLocation.canMoveUp(this)){
                     playerPiece.setLocation(currentBoard[y-1][x]);
+                    return true;
                 }
                 break;
             case "A":
                 if(playerLocation.canMoveLeft(this)){
                     playerPiece.setLocation(currentBoard[y][x-1]);
+                    return true;
                 }
                 break;
             case "S":
-                if(playerLocation.canMoveRight(this)){
-                    playerPiece.setLocation(currentBoard[y][x+1]);
+                if(playerLocation.canMoveDown(this)){
+                    playerPiece.setLocation(currentBoard[y+1][x]);
+                    return true;
                 }
                 break;
             case "D":
-                if(playerLocation.canMoveDown(this)){
-                    playerPiece.setLocation(currentBoard[y+1][x]);
+                if(playerLocation.canMoveRight(this)){
+                    playerPiece.setLocation(currentBoard[y][x+1]);
+                    return true;
                 }
                 break;
         }
@@ -333,12 +340,4 @@ public class Board {
         return pieces.get(player.getName()).location().room;
     }
 
-    /**
-     * // Just for testing purposes, will remove for final submission!
-     * @param args
-     */
-    public static void main(String[] args){
-
-        new Board().draw();
-    }
 }
