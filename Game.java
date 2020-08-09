@@ -68,7 +68,7 @@ public class Game {
 	 * @param cardName is the name of the card to get
 	 * @return
 	 */
-	public Card getCard(String cardName) { return allCards.get(cardName); }
+	public Card getCard(String cardName) { return allCards.get(cardName.toLowerCase()); }
 
 	/**
 	 * Provide access to the System.in Scanner for other classes
@@ -195,27 +195,27 @@ public class Game {
 	 */
 	private void createAllCards() {
 		allCards.clear();
-		allCards.put("Miss Scarlet", new Card("Miss Scarlet", Card.CardType.CHARACTER));
-		allCards.put("Colonel Mustard", new Card("Colonel Mustard", Card.CardType.CHARACTER));
-		allCards.put("Mrs. White", new Card("Mrs. White", Card.CardType.CHARACTER));
-		allCards.put("Mr. Green", new Card("Mr. Green", Card.CardType.CHARACTER));
-		allCards.put("Mrs. Peacock", new Card("Mrs. Peacock", Card.CardType.CHARACTER));
-		allCards.put("Professor Plum", new Card("Professor Plum", Card.CardType.CHARACTER));
-		allCards.put("Candlestick", new Card("Candlestick", Card.CardType.WEAPON));
-		allCards.put("Dagger", new Card("Dagger", Card.CardType.WEAPON));
-		allCards.put("Lead Pipe", new Card("Lead Pipe", Card.CardType.WEAPON));
-		allCards.put("Revolver", new Card("Revolver", Card.CardType.WEAPON));
-		allCards.put("Rope", new Card("Rope", Card.CardType.WEAPON));
-		allCards.put("Spanner", new Card("Spanner", Card.CardType.WEAPON));
-		allCards.put("Kitchen", new Card("Kitchen", Card.CardType.ROOM));
-		allCards.put("Ball Room", new Card("Ball Room", Card.CardType.ROOM));
-		allCards.put("Conservatory", new Card("Conservatory", Card.CardType.ROOM));
-		allCards.put("Dining Room", new Card("Dining Room", Card.CardType.ROOM));
-		allCards.put("Billiard Room", new Card("Billiard Room", Card.CardType.ROOM));
-		allCards.put("Library", new Card("Library", Card.CardType.ROOM));
-		allCards.put("Lounge", new Card("Lounge", Card.CardType.ROOM));
-		allCards.put("Hall", new Card("Hall", Card.CardType.ROOM));
-		allCards.put("Study", new Card("Study", Card.CardType.ROOM));
+		allCards.put("miss scarlet", new Card("Miss Scarlet", Card.CardType.CHARACTER));
+		allCards.put("colonel mustard", new Card("Colonel Mustard", Card.CardType.CHARACTER));
+		allCards.put("mrs white", new Card("Mrs. White", Card.CardType.CHARACTER));
+		allCards.put("mr green", new Card("Mr. Green", Card.CardType.CHARACTER));
+		allCards.put("mrs peacock", new Card("Mrs. Peacock", Card.CardType.CHARACTER));
+		allCards.put("professor plum", new Card("Professor Plum", Card.CardType.CHARACTER));
+		allCards.put("candlestick", new Card("Candlestick", Card.CardType.WEAPON));
+		allCards.put("cagger", new Card("Dagger", Card.CardType.WEAPON));
+		allCards.put("lead pipe", new Card("Lead Pipe", Card.CardType.WEAPON));
+		allCards.put("revolver", new Card("Revolver", Card.CardType.WEAPON));
+		allCards.put("rope", new Card("Rope", Card.CardType.WEAPON));
+		allCards.put("spanner", new Card("Spanner", Card.CardType.WEAPON));
+		allCards.put("kitchen", new Card("Kitchen", Card.CardType.ROOM));
+		allCards.put("ball room", new Card("Ball Room", Card.CardType.ROOM));
+		allCards.put("conservatory", new Card("Conservatory", Card.CardType.ROOM));
+		allCards.put("dining room", new Card("Dining Room", Card.CardType.ROOM));
+		allCards.put("billiard room", new Card("Billiard Room", Card.CardType.ROOM));
+		allCards.put("library", new Card("Library", Card.CardType.ROOM));
+		allCards.put("lounge", new Card("Lounge", Card.CardType.ROOM));
+		allCards.put("lall", new Card("Hall", Card.CardType.ROOM));
+		allCards.put("study", new Card("Study", Card.CardType.ROOM));
 	}
 	
 	/**
