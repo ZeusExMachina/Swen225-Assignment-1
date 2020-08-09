@@ -109,25 +109,7 @@ public class Player {
 	
 	public String toString() { return "name: " + name + ", in hand: " + hand.toString(); }
 	
-	public boolean suggest(String n1, String n2, String n3) {
-		Card c1 = g.getCard(n1);
-		Card c2 = g.getCard(n2);
-		Card c3 = g.getCard(n3);
-		while(c1 == null) {
-			g.getCard(n1);
-		}
-		if(c2 == null) {
-			
-		}
-		if(c3 == null) {
-			
-		}
-		
-		CardTuple tuple = new CardTuple(c1,c2,c3);
-			
-		
-		
-	}
+	
 	
 	public boolean suggest(Game game) {
 		Scanner scan = new Scanner(System.in);
