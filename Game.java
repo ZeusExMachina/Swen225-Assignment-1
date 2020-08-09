@@ -34,13 +34,16 @@ public class Game {
 	 * A flag for if the game is over or not.
 	 */
 	private boolean gameOver;
+
+	private Scanner scan;
 	
 	/**
 	 * Game constructor.
-	 * 
-	 * @param playerCount is the number of players
+	 *
 	 */
-	public Game() {}
+	public Game() {
+		this.scan = new Scanner(System.in);
+	}
 	
 	// ----------------- WHILE GAME RUNS -------------------
 	
@@ -49,10 +52,10 @@ public class Game {
 	 * the murder condition, in which case they win and the 
 	 * game is over.
 	 */
-	public void play(Scanner scan) {
+	public void play() {
 		while (!gameOver) {
 			System.out.println("Player " + turnNum + "'s [" + players.get(turnNum).getName() + "] turn");
-			if(players.get(turnNum).playTurn(this,scan)) { gameOver = true; break; }
+			if(players.get(turnNum).playTurn(this)) { gameOver = true; break; }
 			turnNum++;
 			if (turnNum > players.size()) { turnNum = 1; }
 		}
@@ -66,7 +69,16 @@ public class Game {
 	 * @return
 	 */
 	public Card getCard(String cardName) { return allCards.get(cardName); }
-	
+
+	/**
+	 * Provide access to the System.in Scanner for other classes
+	 *
+	 * @return the Game's Scanner
+	 */
+	public Scanner getScanner() {
+		return scan;
+	}
+
 	/**
 	 * Run through all players to find a player that can refute 
 	 * a given suggestion.
@@ -76,7 +88,7 @@ public class Game {
 	 * @return the card used to refute the suggestion, if any.
 	 * 		   If there is no refutation card, return null.
 	 */
-	public Card refutationProcess(Player suggester, CardTuple suggestion, Scanner scan) {
+	public Card refutationProcess(Player suggester, CardTuple suggestion) {
 		Card refuteCard = null;
 		int playerNum;
 		Player player;
@@ -88,7 +100,7 @@ public class Game {
 			player = players.get(playerNum);
 			if (!player.equals(suggester)) {
 				System.out.println("Player " + playerNum + " to try to refute Player " + turnNum + "'s suggestion");
-				refuteCard = player.refute(suggestion,scan);
+				refuteCard = player.refute(suggestion);
 				if (refuteCard != null) { break; }
 			}
 		}
@@ -108,15 +120,15 @@ public class Game {
 	}
 	
 	/**
-	 * Move a player piece on the board to a new postion.
+	 * Move a player piece on the board to a new position.
 	 * 
-	 * @param pieceName is the name of the piece to move
-	 * @param newPos is the new position of the piece
+	 * @param player The player to move
+	 * @param direction A string containing WASD for up, left,
+	 *                  down or right movement.
 	 * @return whether or not the move was successful
 	 */
 	public boolean movePlayer(Player player, String direction) {
 		return board.movePlayer(player,direction);
-		// then update board screen
 	}
 	
 	/**
@@ -149,6 +161,12 @@ public class Game {
 	public Room getPlayerRoom(Player player){
 		return board.getPlayerRoom(player);
 	}
+
+
+
+	public void drawBoard(){
+		board.draw();
+	}
 	
 	// ----------------- PRE-GAME SETUP --------------------
 	
@@ -159,7 +177,7 @@ public class Game {
 	 * 		  in the game
 	 */
 	private void setup(int playerCount) {
-		//board = new Board();
+		board = new Board();
 		turnNum = 1;
 		gameOver = false;
 		// Create the cards and decide on the murder/win conditions
@@ -296,11 +314,10 @@ public class Game {
 	/**
 	 * Greet the players to the game and ask how many people will 
 	 * play.
-	 * 
-	 * @param scan is the scanner to get input from the console
+	 *
 	 * @return the number of players
 	 */
-	private static Integer getPlayerCount(Scanner scan) {
+	private Integer getPlayerCount() {
 		System.out.print("Welcome to Cluedo!\nHow many players? (3-6 allowed).\nNumber of players: ");
 		String answer = scan.nextLine();
 		while (!answer.matches("[3456]")) {
@@ -312,11 +329,10 @@ public class Game {
 	
 	/**
 	 * Ask the players if they want to start another game.
-	 * 
-	 * @param scan is the scanner to get input from the console
+	 *
 	 * @return whether or not a new game should be started
 	 */
-	private static boolean askToPlayAgain(Scanner scan) {
+	private boolean askToPlayAgain() {
 		String input;
 		System.out.print("Would you like to play again? (yes/no): ");
 		while (true) {
@@ -331,18 +347,17 @@ public class Game {
 		Game game;
 		int playerCount;
 		boolean playing = true;
-		Scanner scan = new Scanner(System.in);
 		while (playing) {
 			// Set up and play the game
-			playerCount = getPlayerCount(scan);
+
 			System.out.println("New game started");
 			game = new Game();
+			playerCount = game.getPlayerCount();
 			game.setup(playerCount);
-			game.play(scan);
+			game.play();
 			// Ask to play again
-			playing = askToPlayAgain(scan);
+			playing = game.askToPlayAgain();
 		}
-		scan.close();
 		System.out.println("Cluedo game ended. Thanks for playing!");
 	}
 }
