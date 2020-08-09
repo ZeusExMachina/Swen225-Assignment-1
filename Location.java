@@ -28,31 +28,31 @@ public class Location {
         if(point.y <= 0){
             return false;
         }
-        boolean squareIsFree = board.currentBoard[point.y-1][point.x].occupied;
-        return !northWall && squareIsFree;
+        boolean squareIsOccupied = board.currentBoard[point.y-1][point.x].occupied;
+        return !northWall && !squareIsOccupied;
     }
 
     public boolean canMoveDown(Board board){
-        if(point.y >= Board.HEIGHT){
+        if(point.y >= Board.HEIGHT-1){
             return false;
         }
-        boolean squareIsFree = board.currentBoard[point.y+1][point.x].occupied;
-        return !southWall && squareIsFree;
+        boolean squareIsOccupied = board.currentBoard[point.y+1][point.x].occupied;
+        return !southWall && !squareIsOccupied;
     }
 
     public boolean canMoveRight(Board board){
-        if(point.x <= Board.WIDTH){
+        if(point.x >= Board.WIDTH-1){
             return false;
         }
-        boolean squareIsFree = board.currentBoard[point.y][point.x+1].occupied;
-        return !eastWall && squareIsFree;
+        boolean squareIsOccupied = board.currentBoard[point.y][point.x+1].occupied;
+        return !eastWall && !squareIsOccupied;
     }
 
     public boolean canMoveLeft(Board board){
         if(point.x <= 0){
             return false;
         }
-        boolean squareIsFree = board.currentBoard[point.y][point.x-1].occupied;
-        return !westWall && squareIsFree;
+        boolean squareIsOccupied = board.currentBoard[point.y][point.x-1].occupied;
+        return !westWall && !squareIsOccupied;
     }
 }
