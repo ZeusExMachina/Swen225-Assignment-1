@@ -236,26 +236,30 @@ public class Player {
 			while(refuteCard == null) {
 				String choice = scan.nextLine().toUpperCase();
 				
-				if(choice.equals(tup.weaponCard().getName())) {
+				
+				if(choice.equalsIgnoreCase(tup.weaponCard().getName())) {
 					for(Card c : refuteOptions) {
-						if(c.getName().equals(choice)) {
+						if(c.getName().equalsIgnoreCase(choice)) {
 							refuteCard = tup.weaponCard();
+							break;
 						}
 					}
 				}
 				
-				if(choice.equals(tup.characterCard().getName())) {
+				if(choice.equalsIgnoreCase(tup.characterCard().getName())) {
 					for(Card c : refuteOptions) {
-						if(c.getName().equals(choice)) {
+						if(c.getName().equalsIgnoreCase(choice)) {
 							refuteCard = tup.characterCard();
+							break;
 						}
 					}
 				}
 				
-				if(choice.equals(tup.roomCard().getName())) {
+				if(choice.equalsIgnoreCase(tup.roomCard().getName())) {
 					for(Card c : refuteOptions) {
-						if(c.getName().equals(choice)) {
+						if(c.getName().equalsIgnoreCase(choice)) {
 							refuteCard = tup.roomCard();
+							break;
 						}
 					}
 				}
