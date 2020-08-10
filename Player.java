@@ -6,7 +6,6 @@ public class Player {
 	private final Random rand;
 	public Game g;
 	private boolean canAccuse = true;
-	private boolean canSuggest = true;
 	private Stack<Location> prevLocations;
 	private Set<Location> locationsVisited;
 
@@ -73,7 +72,7 @@ public class Player {
 
 		if (g.checkPlayerInRoom(this)) {
 			receivedValidInput = false;
-			canSuggest = true;
+			boolean canSuggest = true;
 			while (!receivedValidInput && canSuggest) {
 				System.out.print("Would you like to suggest? (Y/N): ");
 				String userInput = scan.nextLine().toUpperCase();
@@ -146,9 +145,6 @@ public class Player {
 		return first + second;
 	}
 
-	/**
-	 * Moves the player piece on the board according to user input
-	 */
 	private void move(){
 		int counter = rollDice();
 		Scanner scan = g.getScanner();
@@ -157,38 +153,55 @@ public class Player {
 		locationsVisited.clear();
 		prevLocations.clear();
 		while(counter > 0) {
-			// Ask where to move
-			System.out.println("Moves left: " + counter + " Enter a single move with W, A, S, or D and press enter: ");
-			String direction = scan.nextLine().toUpperCase();
-			if (direction.equals("W") || direction.equals("A") || direction.equals("S") || direction.equals("D")) {
-				// Before anything, record the location we're moving from
-				prevLocation = g.getPlayerLocation(this);
-				// Then first, check whether or not the move is valid
-				int moveAttemptResult = g.movePlayer(this, direction, locationsVisited, prevLocations);
-				if(moveAttemptResult == 0){
-					// Successful move
-					newLocation = g.getPlayerLocation(this);
-					if (!prevLocations.isEmpty() && newLocation.equals(prevLocations.peek())) {
-						locationsVisited.remove(prevLocations.pop());
-						counter++;
-					} else {
-						locationsVisited.add(prevLocation);
-						prevLocations.push(prevLocation);
-						if(g.checkPlayerInRoom(this)){
-							counter = 0;
-							// TODO: place Piece into random non-doorway unused Location in the room
-						} else{
-							counter--;
-						}
-					}
-					g.drawBoard();
-				} else if (moveAttemptResult < 0) {
-					System.out.println("Cannot move in that direction, please try again.");
-				} else if (moveAttemptResult > 0) {
-					System.out.println("Already moved there this turn, please try again.");
+
+			// If player can choose their exit, give them options
+			if(g.checkPlayerInRoom(this) && g.getPlayerRoom(this).getUnoccupiedExits().size() > 1){
+				List<Location> exits = g.labelRoomExits(g.getPlayerLocation(this));
+				g.drawBoard();
+				System.out.println("Please enter the number of the exit you wish to use: ");
+				String input = scan.nextLine();
+				while(!input.matches("[1234]") || (Integer.parseInt(input) > exits.size() || Integer.parseInt(input) < 0)){
+					System.out.println("Please enter a valid exit number");
+					input = scan.nextLine();
 				}
-			} else {
-				System.out.println("Invalid input, please try again.");
+				Location selectedExit = exits.get(Integer.parseInt(input)-1);
+				g.movePlayer(this, selectedExit);
+				counter--;
+
+			}
+			// Otherwise ask where to move via WASD
+			else {
+				System.out.println("Moves left: " + counter + " Enter a single move with W, A, S, or D and press enter: ");
+				String direction = scan.nextLine().toUpperCase();
+				if (direction.equals("W") || direction.equals("A") || direction.equals("S") || direction.equals("D")) {
+					// Before anything, record the location we're moving from
+					prevLocation = g.getPlayerLocation(this);
+					// Then first, check whether or not the move is valid
+					int moveAttemptResult = g.movePlayer(this, direction, locationsVisited, prevLocations);
+					if (moveAttemptResult == 0) {
+						// Successful move
+						newLocation = g.getPlayerLocation(this);
+						if (!prevLocations.isEmpty() && newLocation.equals(prevLocations.peek())) {
+							locationsVisited.remove(prevLocations.pop());
+							counter++;
+						} else {
+							locationsVisited.add(prevLocation);
+							prevLocations.push(prevLocation);
+							if (g.checkPlayerInRoom(this)) {
+								counter = 0;
+							} else {
+								counter--;
+							}
+						}
+						g.drawBoard();
+					} else if (moveAttemptResult < 0) {
+						System.out.println("Cannot move in that direction, please try again.");
+					} else if (moveAttemptResult > 0) {
+						System.out.println("Already moved there this turn, please try again.");
+					}
+				} else {
+					System.out.println("Invalid input, please try again.");
+				}
 			}
 		}
 	}
