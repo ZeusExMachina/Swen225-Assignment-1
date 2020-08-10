@@ -338,39 +338,30 @@ public class Player {
 	 * @return CardTuple
 	 */
 	public CardTuple getThreeCards(Game game) {
-		Scanner scan = new Scanner(System.in);
-		Card charCard;
+		Scanner scan = game.getScanner();
+		Card charCard, weapCard, roomCard;
 		System.out.print("Character: ");
 		charCard = isCard(scan.nextLine(),Card.CardType.CHARACTER);
-		if(charCard == null) {
-			while(charCard == null) {
-				System.out.println("Not a valid Character card try again: ");
-				charCard = isCard(scan.nextLine(),Card.CardType.CHARACTER);
-			}
+		while(charCard == null) {
+			System.out.println("Not a valid Character card try again: ");
+			charCard = isCard(scan.nextLine(),Card.CardType.CHARACTER);
 		}
 
-		Card weapCard;
 		System.out.print("Weapon: ");
 		weapCard = isCard(scan.nextLine(),Card.CardType.WEAPON);
-		if(weapCard == null) {
-			while(weapCard == null) {
-				System.out.println("Not a valid Weapon card try again: ");
-				weapCard = isCard(scan.nextLine(),Card.CardType.WEAPON);
-			}
+		while(weapCard == null) {
+			System.out.println("Not a valid Weapon card try again: ");
+			weapCard = isCard(scan.nextLine(),Card.CardType.WEAPON);
 		}
 
-		Card roomCard;
 		System.out.print("Room: ");
 		roomCard = isCard(scan.nextLine(),Card.CardType.ROOM);
-		if(roomCard == null) {
-			while(roomCard == null) {
-				System.out.println("Not a valid room card try again: ");
-				roomCard = isCard(scan.nextLine(),Card.CardType.ROOM);
-			}
+		while(roomCard == null) {
+			System.out.println("Not a valid room card try again: ");
+			roomCard = isCard(scan.nextLine(),Card.CardType.ROOM);
 		}
-
-		roomCard = g.getCard(g.getPlayerRoom(this).getName());
 		return new CardTuple(charCard,weapCard,roomCard);
-
 	}
+	
+	public String toString() { return "name: " + name + ", in hand: " + hand.toString(); }
 }
