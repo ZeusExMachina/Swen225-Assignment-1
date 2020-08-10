@@ -1,5 +1,3 @@
-import java.util.*;
-
 /**
  * Holds a tuple of 3 Cards, with each card being of a 
  * different type.
