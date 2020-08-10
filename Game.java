@@ -54,12 +54,16 @@ public class Game {
 	 */
 	public void play() {
 		while (!gameOver) {
-			System.out.println("Player " + turnNum + "'s [" + players.get(turnNum).getName() + "] turn");
+			// Play a turn
+			System.out.println("Player " + turnNum + "'s [" + players.get(turnNum).getName() + "] turn. Cards: ");
 			if(players.get(turnNum).playTurn(this)) { gameOver = true; break; }
 			turnNum++;
 			if (turnNum > players.size()) { turnNum = 1; }
+			// Check if all players can still make an accusation
+			gameOver = !allPlayersCanAccuse();
 		}
-		System.out.println("Congratulations! Player " + turnNum + " (" + players.get(turnNum).getName() + ") found the correct combination! They won!");
+		if (allPlayersCanAccuse()) { System.out.println("Congratulations! Player " + turnNum + " (" + players.get(turnNum).getName() + ") found the correct combination! They won!"); }
+		else { System.out.println("No player can accuse anymore. Nobody wins!"); }
 	}
 	
 	/**
@@ -171,10 +175,14 @@ public class Game {
 		return board.getPlayerRoom(player);
 	}
 
-
-
 	public void drawBoard(){
 		board.draw();
+	}
+	
+	private boolean allPlayersCanAccuse() {
+		boolean aPlayerCanAccuse = false;
+		for (Map.Entry<Integer,Player> player : players.entrySet()) { aPlayerCanAccuse = player.getValue().canAccuse(); }
+		return aPlayerCanAccuse;
 	}
 	
 	// ----------------- PRE-GAME SETUP --------------------
