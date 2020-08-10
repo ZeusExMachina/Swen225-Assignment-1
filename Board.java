@@ -22,6 +22,7 @@ public class Board {
         setupRooms();
         loadBoard();
         setupPieces();
+        calculateRoomEntrancesAndExits();
     }
 
     /**
@@ -83,9 +84,9 @@ public class Board {
         // The characters start at the same position every game.
         pieces.put("Miss Scarlet", new Piece("S", currentBoard[24][7]));
         pieces.put("Colonel Mustard", new Piece("M", currentBoard[17][0]));
-        pieces.put("Mrs. White", new Piece("W", currentBoard[0][9]));
-        pieces.put("Mr. Green", new Piece("G", currentBoard[0][14]));
-        pieces.put("Mrs. Peacock", new Piece("P", currentBoard[6][23]));
+        pieces.put("Mrs White", new Piece("W", currentBoard[0][9]));
+        pieces.put("Mr Green", new Piece("G", currentBoard[0][14]));
+        pieces.put("Mrs Peacock", new Piece("P", currentBoard[6][23]));
         pieces.put("Professor Plum", new Piece("L", currentBoard[19][23]));
 
         // The weapons start in random positions every game.
@@ -168,7 +169,7 @@ public class Board {
                 else{
                     printableBoard[row1].append("   ");
                 }
-                if(location.point.x == 23){
+                if(location.point.x == WIDTH - 1){
                     if(wallIsAdjacent(location) || location.northWall || location.eastWall){
                         printableBoard[row1].append("+");
                     }
@@ -186,7 +187,7 @@ public class Board {
                 else{
                     printableBoard[row2].append("    ");
                 }
-                if(location.point.x == 23){
+                if(location.point.x == WIDTH - 1){
                     if(location.eastWall){
                         printableBoard[row2].append("#");
                     }
@@ -195,7 +196,7 @@ public class Board {
                     }
                 }
             }
-            if(row == 24){
+            if(row == HEIGHT - 1){
                 printableBoard[row3] = new StringBuilder();
                 for(int col = 0; col < WIDTH; col++){
                     Location location = currentBoard[row][col];
@@ -211,7 +212,7 @@ public class Board {
                     else{
                         printableBoard[row3].append("   ");
                     }
-                    if(location.point.x == 23){
+                    if(location.point.x == WIDTH - 1){
                         if(wallIsAdjacent(location) || location.southWall || location.eastWall){
                             printableBoard[row3].append("+");
                         }
@@ -271,8 +272,49 @@ public class Board {
         }
     }
 
-    public void placePlayerInRoom(Player player){
-
+    /**
+     * Store the entrance and exit squares between a room like
+     * the Study and the Passageway within each Room.
+     */
+    public void calculateRoomEntrancesAndExits(){
+        for(Room room : rooms.values()){
+            for(Location loc : room.getLocations()){
+                int col = loc.point.x;
+                int row = loc.point.y;
+                if(!loc.northWall && row > 0){
+                    Location possibleExit = currentBoard[row-1][col];
+                    if(possibleExit.room != null &&
+                            possibleExit.room.getName().equals("Passageway")){
+                        room.addEntrance(loc);
+                        room.addExit(possibleExit);
+                    }
+                }
+                if(!loc.eastWall && col < WIDTH){
+                    Location possibleExit = currentBoard[row][col+1];
+                    if(possibleExit.room != null &&
+                            possibleExit.room.getName().equals("Passageway")) {
+                        room.addEntrance(loc);
+                        room.addExit(possibleExit);
+                    }
+                }
+                if(!loc.southWall && row < HEIGHT){
+                    Location possibleExit = currentBoard[row+1][col];
+                    if(possibleExit.room != null &&
+                            possibleExit.room.getName().equals("Passageway")){
+                        room.addEntrance(loc);
+                        room.addExit(possibleExit);
+                    }
+                }
+                if(!loc.westWall && col > 0){
+                    Location possibleExit = currentBoard[row][col-1];
+                    if(possibleExit.room != null &&
+                            possibleExit.room.getName().equals("Passageway")){
+                        room.addEntrance(loc);
+                        room.addExit(possibleExit);
+                    }
+                }
+            }
+        }
     }
 
 
@@ -294,25 +336,42 @@ public class Board {
         switch(direction){
             case "W":
                 if(playerLocation.canMoveUp(this)){
-                    playerPiece.setLocation(currentBoard[y-1][x]);
+                    Location destination = currentBoard[y-1][x];
+                    // Ensure a piece is never blocking another piece from entering the room
+                    if(!destination.room.getName().equals("Passageway")){
+                        destination = destination.room.getRandomRoomLocation();
+                    }
+                    playerPiece.setLocation(destination);
                     return true;
                 }
                 break;
             case "A":
                 if(playerLocation.canMoveLeft(this)){
-                    playerPiece.setLocation(currentBoard[y][x-1]);
+                    Location destination = currentBoard[y][x-1];
+                    if(!destination.room.getName().equals("Passageway")){
+                        destination = destination.room.getRandomRoomLocation();
+                    }
+                    playerPiece.setLocation(destination);
                     return true;
                 }
                 break;
             case "S":
                 if(playerLocation.canMoveDown(this)){
-                    playerPiece.setLocation(currentBoard[y+1][x]);
+                    Location destination = currentBoard[y+1][x];
+                    if(!destination.room.getName().equals("Passageway")){
+                        destination = destination.room.getRandomRoomLocation();
+                    }
+                    playerPiece.setLocation(destination);
                     return true;
                 }
                 break;
             case "D":
                 if(playerLocation.canMoveRight(this)){
-                    playerPiece.setLocation(currentBoard[y][x+1]);
+                    Location destination = currentBoard[y][x+1];
+                    if(!destination.room.getName().equals("Passageway")){
+                        destination = destination.room.getRandomRoomLocation();
+                    }
+                    playerPiece.setLocation(destination);
                     return true;
                 }
                 break;
@@ -328,7 +387,7 @@ public class Board {
      */
     public boolean checkPlayerInRoom(Player player){
         Room playerRoom = pieces.get(player.getName()).location().room;
-        return playerRoom != null && playerRoom != rooms.get("Passageway");
+        return playerRoom != null && !playerRoom.equals(rooms.get("Passageway"));
     }
 
     /**
