@@ -380,6 +380,15 @@ public class Board {
         playerPiece.setLocation(destination);
         return 0;
     }
+    
+    /**
+     * Get the current location of a Player Piece that corresponds 
+     * to a given Player.
+     * 
+     * @param player is the player to find the location for
+     * @return the location of player's piece
+     */
+    public Location getPlayerLocation(Player player) { return pieces.get(player.getName()).location(); }
 
     /**
      * Returns if a player is in one of the Rooms which is not
