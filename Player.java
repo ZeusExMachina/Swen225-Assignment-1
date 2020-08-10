@@ -22,9 +22,9 @@ public class Player {
 	 * returns players name
 	 * @return String 
 	 */
-	public String getName() {
-		return name;
-	}
+	public String getName() { return name; }
+	
+	public boolean canAccuse() { return canAccuse; }
 	
 	/**
 	 * Puts Card into players hand
