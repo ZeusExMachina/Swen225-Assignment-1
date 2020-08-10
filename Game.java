@@ -231,7 +231,7 @@ public class Game {
 		allCards.put("billiard room", new Card("Billiard Room", Card.CardType.ROOM));
 		allCards.put("library", new Card("Library", Card.CardType.ROOM));
 		allCards.put("lounge", new Card("Lounge", Card.CardType.ROOM));
-		allCards.put("lall", new Card("Hall", Card.CardType.ROOM));
+		allCards.put("hall", new Card("Hall", Card.CardType.ROOM));
 		allCards.put("study", new Card("Study", Card.CardType.ROOM));
 	}
 	
