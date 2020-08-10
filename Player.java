@@ -227,27 +227,40 @@ public class Player {
 		
 		if(!refuteOptions.isEmpty()) {
 			Scanner scan = new Scanner(System.in);
-			System.out.println("What card would you like to refute with? (W/C/R)");
+			System.out.println("Refutable Cards:");
 			for(Card c : refuteOptions) {
 				System.out.println(c.getName());
 			}
+			System.out.println("What card would you like to refute with?: ");
 			
 			while(refuteCard == null) {
 				String choice = scan.nextLine().toUpperCase();
 				
-				if(choice.equals("W") && tup.weaponCard() != null) {
-					refuteCard = tup.weaponCard();
+				if(choice.equals(tup.weaponCard().getName())) {
+					for(Card c : refuteOptions) {
+						if(c.getName().equals(choice)) {
+							refuteCard = tup.weaponCard();
+						}
+					}
 				}
 				
-				if(choice.equals("C") && tup.weaponCard() != null) {
-					refuteCard =  tup.characterCard();
+				if(choice.equals(tup.characterCard().getName())) {
+					for(Card c : refuteOptions) {
+						if(c.getName().equals(choice)) {
+							refuteCard = tup.characterCard();
+						}
+					}
 				}
 				
-				if(choice.equals("R") && tup.weaponCard() != null) {
-					refuteCard = tup.roomCard();
+				if(choice.equals(tup.roomCard().getName())) {
+					for(Card c : refuteOptions) {
+						if(c.getName().equals(choice)) {
+							refuteCard = tup.roomCard();
+						}
+					}
 				}
 				
-				else { System.out.println("Not a valid option please type either W,C or R");}
+				else { System.out.println("Not a valid option please choose from your refutable cards: ");}
 			}
 			
 		}
