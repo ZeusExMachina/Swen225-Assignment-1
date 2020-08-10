@@ -18,9 +18,9 @@ public class Player {
 		this.locationsVisited = new HashSet<Location>();
 	}
 
-	public String getName() {
-		return name;
-	}
+	public String getName() { return name; }
+	
+	public boolean canAccuse() { return canAccuse; }
 
 	public void giveCard(Card card) { hand.put(card.getName(),card); }
 
@@ -57,54 +57,8 @@ public class Player {
 		if(!g.getPlayerRoom(this).playerCanRoll()){
 			System.out.println("Sorry, you cannot roll to move out of this Room, the exits are blocked!");
 		}
-
-		if (g.checkPlayerInRoom(this)) {
-			receivedValidInput = false;
-			canSuggest = true;
-			while (!receivedValidInput && canSuggest) {
-				System.out.print("Would you like to suggest? (Y/N): ");
-				String userInput = scan.nextLine().toUpperCase();
-				if (userInput.equals("N")) {
-					receivedValidInput = true;
-				} else if (userInput.equals("Y")) {
-					canSuggest = false;
-					Card charCard;
-					System.out.print("Character: ");
-					charCard = isCard(scan.nextLine(), Card.CardType.CHARACTER);
-					if (charCard == null) {
-						while (charCard == null) {
-							System.out.println("Not a valid Character card, try again: ");
-							charCard = isCard(scan.nextLine(), Card.CardType.CHARACTER);
-						}
-					}
-
-					Card weapCard;
-					System.out.print("Weapon: ");
-					weapCard = isCard(scan.nextLine(), Card.CardType.WEAPON);
-					if (weapCard == null) {
-						while (weapCard == null) {
-							System.out.println("Not a valid Weapon card, try again: ");
-							weapCard = isCard(scan.nextLine(), Card.CardType.WEAPON);
-						}
-					}
-
-					Card roomCard = g.getCard(g.getPlayerRoom(this).getName());
-
-
-					CardTuple cardTup = new CardTuple(charCard, weapCard, roomCard);
-					g.moveViaSuggestion(cardTup);
-
-					Card refuteCard = g.refutationProcess(this, cardTup);
-					if (refuteCard == null) {
-						System.out.println("Your suggestion " + cardTup.toString() + " was not refuted!");
-					} else {
-						System.out.println("Your suggestion " + cardTup.toString() + " was refuted by the card " + refuteCard.getName());
-					}
-				} else {
-					System.out.println("Invalid input, please try again.");
-				}
-			}
-		}
+		
+		suggest(receivedValidInput,scan);
 
 		receivedValidInput = false;
 		while (!receivedValidInput) {
@@ -183,23 +137,59 @@ public class Player {
 			if(returnCard.getType().equals(ct)) {
 				return returnCard;
 			}
-			return returnCard;
+			return null;
 		}
-		return returnCard;
+		return null;
 	}
 
-	public void clearHand() { hand.clear(); }
+	public void suggest(boolean receivedValidInput, Scanner scan) {
+		if (g.checkPlayerInRoom(this)) {
+			receivedValidInput = false;
+			canSuggest = true;
+			while (!receivedValidInput && canSuggest) {
+				System.out.print("Would you like to suggest? (Y/N): ");
+				String userInput = scan.nextLine().toUpperCase();
+				if (userInput.equals("N")) {
+					receivedValidInput = true;
+				} else if (userInput.equals("Y")) {
+					canSuggest = false;
+					Card charCard;
+					System.out.print("Character: ");
+					charCard = isCard(scan.nextLine(), Card.CardType.CHARACTER);
+					if (charCard == null) {
+						while (charCard == null) {
+							System.out.println("Not a valid Character card, try again: ");
+							charCard = isCard(scan.nextLine(), Card.CardType.CHARACTER);
+						}
+					}
 
-	public String toString() { return "name: " + name + ", in hand: " + hand.toString(); }
+					Card weapCard;
+					System.out.print("Weapon: ");
+					weapCard = isCard(scan.nextLine(), Card.CardType.WEAPON);
+					if (weapCard == null) {
+						while (weapCard == null) {
+							System.out.println("Not a valid Weapon card, try again: ");
+							weapCard = isCard(scan.nextLine(), Card.CardType.WEAPON);
+						}
+					}
 
-	public Card suggest(Game game) {
-		Scanner scan = g.getScanner();
-		System.out.println("Make a suggestion - type in 3 cards:");
-		Card firstCard = askForCard(game);
-		Card secondCard = askForCard(game);
-		Card thirdCard = askForCard(game);
-		CardTuple suggestion = new CardTuple(firstCard, secondCard, thirdCard);
-		return game.refutationProcess(this, suggestion);
+					Card roomCard = g.getCard(g.getPlayerRoom(this).getName());
+
+
+					CardTuple cardTup = new CardTuple(charCard, weapCard, roomCard);
+					g.moveViaSuggestion(cardTup);
+
+					Card refuteCard = g.refutationProcess(this, cardTup);
+					if (refuteCard == null) {
+						System.out.println("Your suggestion " + cardTup.toString() + " was not refuted!");
+					} else {
+						System.out.println("Your suggestion " + cardTup.toString() + " was refuted by the card " + refuteCard.getName());
+					}
+				} else {
+					System.out.println("Invalid input, please try again.");
+				}
+			}
+		}
 	}
 
 	public Card askForCard(Game game) {
@@ -334,4 +324,6 @@ public class Player {
 		return new CardTuple(charCard,weapCard,roomCard);
 
 	}
+	
+	public String toString() { return "name: " + name + ", in hand: " + hand.toString(); }
 }
