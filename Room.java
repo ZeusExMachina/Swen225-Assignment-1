@@ -9,6 +9,8 @@ import java.util.*;
 public class Room {
     private String name;
     private Set<Location> locations = new HashSet<>();
+    private Set<Location> entrances = new HashSet<>();
+    private Set<Location> exits = new HashSet<>();
 
     /**
      * Constructor for the Room class
@@ -28,6 +30,18 @@ public class Room {
         return name;
     }
 
+    public Set<Location> getLocations() {
+        return locations;
+    }
+
+    public Set<Location> getEntrances() {
+        return entrances;
+    }
+
+    public Set<Location> getExits() {
+        return exits;
+    }
+
     /**
      * Adds a Location in the Set of Locations that
      * belong to this Room.
@@ -36,6 +50,28 @@ public class Room {
      */
     public void addLocation(Location location){
         locations.add(location);
+    }
+
+    /**
+     * Adds a Location in the Set of Entrances that
+     * belong to this Room.
+     *
+     * @param location A Location in the Room that is has a neighbouring square in
+     *                 the Passageway it can access.
+     */
+    public void addEntrance(Location location){
+        entrances.add(location);
+    }
+
+    /**
+     * Adds a Location in the Set of Exits that
+     * belong to this Room.
+     *
+     * @param location A Location in the Passageway that has a neighbouring
+     *                 square it can access inside this Room.
+     */
+    public void addExit(Location location){
+        exits.add(location);
     }
 
     /**
@@ -49,7 +85,7 @@ public class Room {
         List<Location> allLocations = new ArrayList<>(locations);
         Collections.shuffle(allLocations);
         for (Location loc : allLocations) {
-            if (!loc.occupied) {
+            if (!loc.occupied && !entrances.contains(loc)) {
                 return loc;
             }
         }
