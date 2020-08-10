@@ -103,7 +103,7 @@ public class Player {
 		receivedValidInput = false;
 		while (!receivedValidInput) {
 			System.out.print("Would you like to accuse? (Y/N): ");
-			String userInput = scan.next().toUpperCase();
+			String userInput = scan.nextLine().toUpperCase();
 			if (userInput.equals("Y")) {
 				return (accuse(g));
 			} else if (userInput.equals("N")) {
