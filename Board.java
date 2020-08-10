@@ -14,6 +14,8 @@ public class Board {
     StringBuilder[] printableBoard = new StringBuilder[HEIGHT*2+1];
     Map<String, Room> rooms = new HashMap<>();
     Map<String, Piece> pieces = new HashMap<>();
+    boolean exitLabelsRequired = false;
+    List<Location> exitsToLabel = new ArrayList<>();
 
     /**
      * Constructor for the game's Board
@@ -49,7 +51,7 @@ public class Board {
             scan.useDelimiter(",");
             for (int row = 0; row < HEIGHT; row++) {
                 for(int col = 0; col < WIDTH; col++) {
-                    String cellData = scan.next();
+                    String cellData = scan.next().trim();
                     String roomDescription = cellData;
                     String walls = "";
                     if (cellData.contains("_")) {
@@ -140,9 +142,31 @@ public class Board {
         placeWallsAndRooms();
         placePieces();
         addRoomLabels();
+
+        if(exitLabelsRequired){
+            addExitLabels();
+        }
+
         for(StringBuilder s : printableBoard){
             System.out.println(s);
         }
+
+    }
+    
+    /**
+     * Labels the exits on the printableBoard if there are 
+     * multiple ways to exit a Room
+     */
+    public void addExitLabels(){
+        int i = 1;
+        for(Location exit : exitsToLabel){
+            int boardRow = exit.point.y;
+            int boardColumn = exit.point.x;
+            int charIndex = 4 * (boardColumn+1) - 2;
+            int charRow = 2*boardRow+1;
+            printableBoard[charRow].replace(charIndex,charIndex+1, String.valueOf(i++));
+        }
+        exitLabelsRequired = false;
     }
 
     /**
@@ -224,6 +248,18 @@ public class Board {
                 }
             }
         }
+    }
+    
+    /**
+     * Tells the board which room needs exit labelling and returns
+     * the list of exits back to Board
+     * @param location
+     * @return The list of exit locations for the room in the parameter
+     */
+    public List<Location> labelRoomExits(Location location){
+        exitLabelsRequired = true;
+        exitsToLabel = new ArrayList<>(location.room.getUnoccupiedExits());
+        return exitsToLabel;
     }
 
     /**
@@ -331,7 +367,15 @@ public class Board {
         }
     }
 
-
+    /**
+     * This movePlayer can be used if the possible squares are already
+     * validated, e.g. when choosing which exit to leave a Room via.
+     * @param player The player
+     * @param location The destination location
+     */
+    public void movePlayer(Player player, Location location){
+        pieces.get(player.getName()).setLocation(location);
+    }
 
 
     /**
