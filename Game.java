@@ -211,7 +211,7 @@ public class Game {
 		allCards.put("mrs peacock", new Card("Mrs. Peacock", Card.CardType.CHARACTER));
 		allCards.put("professor plum", new Card("Professor Plum", Card.CardType.CHARACTER));
 		allCards.put("candlestick", new Card("Candlestick", Card.CardType.WEAPON));
-		allCards.put("cagger", new Card("Dagger", Card.CardType.WEAPON));
+		allCards.put("dagger", new Card("Dagger", Card.CardType.WEAPON));
 		allCards.put("lead pipe", new Card("Lead Pipe", Card.CardType.WEAPON));
 		allCards.put("revolver", new Card("Revolver", Card.CardType.WEAPON));
 		allCards.put("rope", new Card("Rope", Card.CardType.WEAPON));
