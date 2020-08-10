@@ -23,6 +23,7 @@ public class Board {
         loadBoard();
         setupPieces();
         calculateRoomEntrancesAndExits();
+        addRoomLabels();
     }
 
     /**
@@ -228,7 +229,9 @@ public class Board {
     /**
      * Place the name of the Rooms onto the Board
      */
-    private void drawLabels(){}
+    private void addRoomLabels(){
+        
+    }
 
     /**
      * Helper function for placeWallsAndRooms(), determines
@@ -327,56 +330,55 @@ public class Board {
      *                  direction of movement
      * @return True if the move was completed
      */
-    public boolean movePlayer(Player player, String direction){
+    public Integer movePlayer(Player player, String direction, Set<Location> locationsVisited, Stack<Location> prevLocations){
         Piece playerPiece = pieces.get(player.getName());
         Location playerLocation = playerPiece.location();
+        Location destination = null;
         int x = playerLocation.point.x;
         int y = playerLocation.point.y;
 
         switch(direction){
             case "W":
                 if(playerLocation.canMoveUp(this)){
-                    Location destination = currentBoard[y-1][x];
+                    destination = currentBoard[y-1][x];
                     // Ensure a piece is never blocking another piece from entering the room
                     if(!destination.room.getName().equals("Passageway")){
                         destination = destination.room.getRandomRoomLocation();
                     }
-                    playerPiece.setLocation(destination);
-                    return true;
+                    break;
                 }
-                break;
+                return -1;
             case "A":
                 if(playerLocation.canMoveLeft(this)){
-                    Location destination = currentBoard[y][x-1];
+                    destination = currentBoard[y][x-1];
                     if(!destination.room.getName().equals("Passageway")){
                         destination = destination.room.getRandomRoomLocation();
                     }
-                    playerPiece.setLocation(destination);
-                    return true;
+                    break;
                 }
-                break;
+                return -1;
             case "S":
                 if(playerLocation.canMoveDown(this)){
-                    Location destination = currentBoard[y+1][x];
+                    destination = currentBoard[y+1][x];
                     if(!destination.room.getName().equals("Passageway")){
                         destination = destination.room.getRandomRoomLocation();
                     }
-                    playerPiece.setLocation(destination);
-                    return true;
+                    break;
                 }
-                break;
+                return -1;
             case "D":
                 if(playerLocation.canMoveRight(this)){
-                    Location destination = currentBoard[y][x+1];
+                    destination = currentBoard[y][x+1];
                     if(!destination.room.getName().equals("Passageway")){
                         destination = destination.room.getRandomRoomLocation();
                     }
-                    playerPiece.setLocation(destination);
-                    return true;
+                    break;
                 }
-                break;
+                return -1;
         }
-        return false;
+        if (!prevLocations.isEmpty() && !prevLocations.peek().equals(destination) && locationsVisited.contains(destination)) { return 1; }
+        playerPiece.setLocation(destination);
+        return 0;
     }
 
     /**
