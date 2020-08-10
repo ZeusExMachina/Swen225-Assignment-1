@@ -206,9 +206,9 @@ public class Game {
 		allCards.clear();
 		allCards.put("miss scarlet", new Card("Miss Scarlet", Card.CardType.CHARACTER));
 		allCards.put("colonel mustard", new Card("Colonel Mustard", Card.CardType.CHARACTER));
-		allCards.put("mrs white", new Card("Mrs. White", Card.CardType.CHARACTER));
-		allCards.put("mr green", new Card("Mr. Green", Card.CardType.CHARACTER));
-		allCards.put("mrs peacock", new Card("Mrs. Peacock", Card.CardType.CHARACTER));
+		allCards.put("mrs white", new Card("Mrs White", Card.CardType.CHARACTER));
+		allCards.put("mr green", new Card("Mr Green", Card.CardType.CHARACTER));
+		allCards.put("mrs peacock", new Card("Mrs Peacock", Card.CardType.CHARACTER));
 		allCards.put("professor plum", new Card("Professor Plum", Card.CardType.CHARACTER));
 		allCards.put("candlestick", new Card("Candlestick", Card.CardType.WEAPON));
 		allCards.put("dagger", new Card("Dagger", Card.CardType.WEAPON));
