@@ -38,8 +38,28 @@ public class Room {
         return entrances;
     }
 
-    public Set<Location> getExits() {
-        return exits;
+    public Set<Location> getUnoccupiedExits() {
+        Set<Location> unoccupiedExits = new HashSet<>();
+        for(Location loc : exits){
+            if(!loc.occupied){
+                unoccupiedExits.add(loc);
+            }
+        }
+        return unoccupiedExits;
+    }
+
+    public boolean playerCanRoll(){
+        // Can always roll when in the hallway
+        if(name.equals("Passageway")){
+            return true;
+        }
+        // Cannot roll if all exits out of the room are blocked
+        for(Location loc : exits){
+            if(!loc.occupied){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
