@@ -119,7 +119,14 @@ public class Game {
 	 * @return whether or not they match
 	 */
 	public boolean checkAccusation(CardTuple accusation) {
-		if (murderConditions.equals(accusation)) { return true; }
+		if(murderConditions.characterCard().getName().equals(accusation.characterCard().getName())) {
+			if(murderConditions.roomCard().getName().equals(accusation.roomCard().getName())) {
+				if(murderConditions.weaponCard().getName().equals(accusation.weaponCard().getName())) {
+					return true;
+				}
+			}
+		}
+		
 		return false;
 	}
 	
