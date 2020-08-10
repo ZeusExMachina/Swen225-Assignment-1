@@ -288,6 +288,7 @@ public class Player {
 							break;
 						}
 					}
+					break;
 				}
 
 				if(choice.equalsIgnoreCase(tup.characterCard().getName())) {
@@ -297,6 +298,7 @@ public class Player {
 							break;
 						}
 					}
+					break;
 				}
 
 				if(choice.equalsIgnoreCase(tup.roomCard().getName())) {
@@ -306,6 +308,7 @@ public class Player {
 							break;
 						}
 					}
+					break;
 				}
 
 				else { System.out.println("Not a valid option please choose from your refutable cards: ");}
