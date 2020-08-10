@@ -120,6 +120,15 @@ public class Game {
 	}
 	
 	/**
+     	* Get the current location of a Player Piece that corresponds 
+     	* to a given Player.
+     	* 
+     	* @param player is the player to find the location for
+     	* @return the location of player's piece
+     	*/
+	public Location getPlayerLocation(Player player) { return board.getPlayerLocation(player); }
+	
+	/**
 	 * Move a player piece on the board to a new position.
 	 * 
 	 * @param player The player to move
@@ -127,8 +136,8 @@ public class Game {
 	 *                  down or right movement.
 	 * @return whether or not the move was successful
 	 */
-	public boolean movePlayer(Player player, String direction) {
-		return board.movePlayer(player,direction);
+	public Integer movePlayer(Player player, String direction, Set<Location> locationsVisited, Stack<Location> prevLocations) {
+		return board.movePlayer(player,direction,locationsVisited,prevLocations);
 	}
 	
 	/**
