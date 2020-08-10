@@ -231,16 +231,7 @@ public class Player {
 		//return game.refutationProcess(this, suggestion);
 	//}
 
-	//public Card askForCard(Game game) {
-		//Scanner scan = g.getScanner();
-		//System.out.print("Card: ");
-		//Card card = game.getCard(scan.nextLine());
-		//while (card == null) {
-			//System.out.println("Invalid card. Try again.\nCard:");
-			//card = game.getCard(scan.nextLine());
-		//}
-		//return card;
-	//} 
+	
 
 	/**
 	 * Creates a card tuple of refutable cards then asks player which one they would like to refute with
