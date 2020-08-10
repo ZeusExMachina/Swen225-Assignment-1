@@ -23,7 +23,6 @@ public class Board {
         loadBoard();
         setupPieces();
         calculateRoomEntrancesAndExits();
-        addRoomLabels();
     }
 
     /**
@@ -140,6 +139,7 @@ public class Board {
     public void draw(){
         placeWallsAndRooms();
         placePieces();
+        addRoomLabels();
         for(StringBuilder s : printableBoard){
             System.out.println(s);
         }
@@ -230,7 +230,18 @@ public class Board {
      * Place the name of the Rooms onto the Board
      */
     private void addRoomLabels(){
-        
+        printableBoard[6].replace(78,90,"CONSERVATORY");
+        printableBoard[8].replace(9,16,"KITCHEN");
+        printableBoard[10].replace(44,53,"BALL ROOM");
+        printableBoard[20].replace(78, 86,"BILLIARD");
+        printableBoard[22].replace(80, 84, "ROOM");
+        printableBoard[24].replace(12, 18, "DINING");
+        printableBoard[26].replace(13, 17, "ROOM");
+        printableBoard[34].replace(79, 86,"LIBRARY");
+        printableBoard[42].replace(46, 50, "HALL");
+        printableBoard[44].replace(11, 17, "LOUNGE");
+        printableBoard[46].replace(80, 85,"STUDY");
+
     }
 
     /**
@@ -271,7 +282,7 @@ public class Board {
             suggestedCharacter.setLocation(suggestedRoom.getRandomRoomLocation());
         }
         if(suggestedWeapon.location().room != suggestedRoom){
-            suggestedCharacter.setLocation(suggestedRoom.getRandomRoomLocation());
+            suggestedWeapon.setLocation(suggestedRoom.getRandomRoomLocation());
         }
     }
 
@@ -319,6 +330,8 @@ public class Board {
             }
         }
     }
+
+
 
 
     /**
@@ -380,15 +393,17 @@ public class Board {
         playerPiece.setLocation(destination);
         return 0;
     }
-    
+
     /**
-     * Get the current location of a Player Piece that corresponds 
+     * Get the current location of a Player Piece that corresponds
      * to a given Player.
-     * 
+     *
      * @param player is the player to find the location for
      * @return the location of player's piece
      */
-    public Location getPlayerLocation(Player player) { return pieces.get(player.getName()).location(); }
+    public Location getPlayerLocation(Player player) {
+        return pieces.get(player.getName()).location();
+    }
 
     /**
      * Returns if a player is in one of the Rooms which is not
