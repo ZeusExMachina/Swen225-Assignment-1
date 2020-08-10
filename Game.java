@@ -15,7 +15,7 @@ public class Game {
 	/**
 	 * A list of the names of all characters from Cluedo. Order goes clockwise starting from Miss Scarlet.
 	 */
-	private final List<String> characters = Arrays.asList("Miss Scarlet", "Colonel Mustard", "Mrs. White", "Mr. Green", "Mrs. Peacock", "Professor Plum");
+	private final List<String> characters = Arrays.asList("Miss Scarlet", "Colonel Mustard", "Mrs White", "Mr Green", "Mrs Peacock", "Professor Plum");
 	/**
 	 * A map of all players, and the player number they are associated with. Is implemented as a TreeMap to always maintain ordering of the key.
 	 */
@@ -133,6 +133,16 @@ public class Game {
 	public Location getPlayerLocation(Player player) { return board.getPlayerLocation(player); }
 	
 	/**
+	 * Move a player piece on the baord to a new position,
+	 * no validation of the location is performed.
+	 * @param player The player to move
+	 * @param location A destination Location object
+	 */
+	public void movePlayer(Player player, Location location){
+		board.movePlayer(player, location);
+	}
+	
+	/**
 	 * Move a player piece on the board to a new position.
 	 * 
 	 * @param player The player to move
@@ -173,6 +183,17 @@ public class Game {
 	 */
 	public Room getPlayerRoom(Player player){
 		return board.getPlayerRoom(player);
+	}
+	
+	/**
+	 * Instructs the Board to label the different exits
+	 * a Player may exit from, and returns a list of the exits.
+	 * 
+	 * @param location The player's current Location in a room
+	 * @return A list of exits that are available to move into
+	 */
+	public List<Location> labelRoomExits(Location location){
+		return board.labelRoomExits(location);
 	}
 
 	public void drawBoard(){
