@@ -264,6 +264,8 @@ public class Player {
 			}
 			
 		}
+		
+		else {System.out.println("No cards to refute");}
 
 		return refuteCard;
 	}
