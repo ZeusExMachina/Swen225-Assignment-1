@@ -6,11 +6,15 @@ public class Player {
 	private final Random rand;
 	public Game g;
 	private boolean canAccuse = true;
+	private Stack<Location> prevLocations;
+	private Set<Location> locationsVisited;
 
 	public Player(String name) {
 		this.hand = new HashMap<>();
 		this.name = name;
 		this.rand = new Random();
+		this.prevLocations = new Stack<Location>();
+		this.locationsVisited = new HashSet<Location>();
 	}
 
 	public String getName() {
@@ -126,24 +130,40 @@ public class Player {
 	private void move(){
 		int counter = rollDice();
 		Scanner scan = g.getScanner();
+		Location prevLocation;
+		Location newLocation;
+		locationsVisited.clear();
+		prevLocations.clear();
 		while(counter > 0) {
-			System.out.println("Moves left: " + counter +
-					" Enter a single move with W, A, S, or D and press enter: ");
+			// Ask where to move
+			System.out.println("Moves left: " + counter + " Enter a single move with W, A, S, or D and press enter: ");
 			String direction = scan.nextLine().toUpperCase();
-			if (direction.equals("W") || direction.equals("A") ||
-					direction.equals("S") || direction.equals("D")) {
-				if(g.movePlayer(this, direction)){
-					if(g.checkPlayerInRoom(this)){
-						counter = 0;
-						// TODO: place Piece into random non-doorway unused Location in the room
-					}
-					else{
-						counter--;
+			if (direction.equals("W") || direction.equals("A") || direction.equals("S") || direction.equals("D")) {
+				// Before anything, record the location we're moving from
+				prevLocation = g.getPlayerLocation(this);
+				// Then first, check whether or not the move is valid
+				int moveAttemptResult = g.movePlayer(this, direction, locationsVisited, prevLocations);
+				if(moveAttemptResult == 0){
+					// Successful move
+					newLocation = g.getPlayerLocation(this);
+					if (!prevLocations.isEmpty() && newLocation.equals(prevLocations.peek())) {
+						locationsVisited.remove(prevLocations.pop());
+						counter++;
+					} else {
+						locationsVisited.add(prevLocation);
+						prevLocations.push(prevLocation);
+						if(g.checkPlayerInRoom(this)){
+							counter = 0;
+							// TODO: place Piece into random non-doorway unused Location in the room
+						} else{
+							counter--;
+						}
 					}
 					g.drawBoard();
-				}
-				else{
+				} else if (moveAttemptResult < 0) {
 					System.out.println("Cannot move in that direction, please try again.");
+				} else if (moveAttemptResult > 0) {
+					System.out.println("Already moved there this turn, please try again.");
 				}
 			} else {
 				System.out.println("Invalid input, please try again.");
